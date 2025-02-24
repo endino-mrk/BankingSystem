@@ -6,7 +6,7 @@ import transactions.FundTransfer;
 import transactions.Withdrawal;
 
 public class SavingsAccount extends Account implements Withdrawal, Deposit, FundTransfer {
-    private double loan;
+    private double balance;
 
     /**
      *
@@ -16,9 +16,11 @@ public class SavingsAccount extends Account implements Withdrawal, Deposit, Fund
      * @param OWNERLNAME
      * @param OWNEREMAIL
      * @param pin
+     * @param balance
      */
-    public SavingsAccount(Bank BANK, String ACCOUNTNUMBER, String OWNERFNAME, String OWNERLNAME, String OWNEREMAIL, String pin) {
+    public SavingsAccount(Bank BANK, String ACCOUNTNUMBER, String OWNERFNAME, String OWNERLNAME, String OWNEREMAIL, String pin, double balance) {
         super(BANK, ACCOUNTNUMBER, OWNERFNAME, OWNERLNAME, OWNEREMAIL, pin);
+        this.balance = balance;
     }
 
 

@@ -1,4 +1,4 @@
-package accounts.accLauncher;
+package launcher;
 
 import accounts.Account;
 import bank.Bank;

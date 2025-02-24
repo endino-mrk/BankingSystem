@@ -5,7 +5,7 @@ import transactions.Payment;
 import transactions.Recompense;
 
 public class CreditAccount extends Account implements Payment, Recompense {
-    private double balance;
+    private double loan;
 
     /**
      * complete doc string
@@ -15,11 +15,9 @@ public class CreditAccount extends Account implements Payment, Recompense {
      * @param OWNERLNAME
      * @param OWNEREMAIL
      * @param pin
-     * @param balance
      */
-    public CreditAccount(Bank BANK, String ACCOUNTNUMBER, String OWNERFNAME, String OWNERLNAME, String OWNEREMAIL, String pin, double balance) {
+    public CreditAccount(Bank BANK, String ACCOUNTNUMBER, String OWNERFNAME, String OWNERLNAME, String OWNEREMAIL, String pin) {
         super(BANK, ACCOUNTNUMBER, OWNERFNAME, OWNERLNAME, OWNEREMAIL, pin);
-        this.balance = balance;
     }
 
     // CLASS METHODS HERE W/ PROPER AND COMPLETE DOC STRINGS

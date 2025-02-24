@@ -1,4 +1,4 @@
-package bank.bankLauncher;
+package launcher;
 
 import bank.Bank;
 
