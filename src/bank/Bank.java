@@ -151,8 +151,38 @@ public class Bank {
     /**
      * A comparator that compares if two bank objects share the same set of credentials.
      */
-    public class BankCredentialsComparator implements Comparator {
+    public class BankCredentialsComparator implements Comparator<Bank> {
+        /**
+         *
+         * @param b1 the first object to be compared.
+         * @param b2 the second object to be compared.
+         * @return 1 if c1 wins comparison over c2.
+         *         0 if both contact are equal in comparison.
+         *        -1 if c1 loses comparison to c2.
+         */
+        @Override
+        public int compare(Bank b1, Bank b2){
+            int nameComparison = b1.name.compareTo(b2.name);
 
+            if (nameComparison < 0) {
+                return -1;
+            }
+            else if (nameComparison > 0) {
+                return 1;
+            }
+            // Compare passcode if NAME's are EQUAL
+            else {
+                if (b1.passcode.compareTo(b2.passcode) < 0) {
+                    return -1;
+                }
+                else if (b1.passcode.compareTo(b2.passcode) > 0) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            }
+        }
     }
 
 }
