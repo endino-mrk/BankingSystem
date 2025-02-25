@@ -68,84 +68,108 @@ public class Bank {
 
     // CLASS METHODS HERE W/ PROPER AND COMPLETE DOC STRINGS
 
-    /** Show accounts based on option.
-     *
-     * @param accountType - Type of account to be shown.
-     * @param <T>
-     */
-    public <T> void showAccounts(Class<T> accountType) {
-
-    }
-
-    /** Get the Account object (if it exists) from a given bank.
-     *
-     * @param bank -  Bank to search from.
-     * @param accountNum -  Account number of target account.
-     * @return - target Account
-     */
-    public Account getBankAccount(Bank bank, String accountNum) {
-        return;
-    }
-
-    /** Handles the processing of inputting the basic information of the account.
-     *
-     * @return
-     */
-    public ArrayList<Field<String, ?>>  createNewAccount() {
-        return;
-    }
-
-    /** Create a new credit account. Utilizes the createNewAccount() method.
-     *
-     * @return
-     */
-    public CreditAccount createNewCreditAccount() {
-        return;
-    }
-
-    /** Create a new savings account. Utilizes the createNewAccount() method.
-     *
-     * @return
-     */
-    public SavingsAccount createNewSavingsAccount() {
-        return;
-    }
-
-    /** Adds a new account to this bank, if the account number of the new account does not exist inside
-     the bank.
-     *
-     * @param account - Account object to be added into this bank.
-     */
-    public void addNewAccount(Account account) {
-
-    }
-
-    /** Checks if an account object exists into a given bank based on some account number.
-     *
-     * @param bank - Bank to check if account exists.
-     * @param accountNum - Account number of target account to check.
-     * @return
-     */
-    public static boolean accountExists(Bank bank, String accountNum) {
-        return;
-    }
-
-    public String toString() {
-        return "";
-    }
+//    /** Show accounts based on option.
+//     *
+//     * @param accountType - Type of account to be shown.
+//     * @param <T>
+//     */
+//    public <T> void showAccounts(Class<T> accountType) {
+//
+//    }
+//
+//    /** Get the Account object (if it exists) from a given bank.
+//     *
+//     * @param bank -  Bank to search from.
+//     * @param accountNum -  Account number of target account.
+//     * @return - target Account
+//     */
+//    public Account getBankAccount(Bank bank, String accountNum) {
+//        return;
+//    }
+//
+//    /** Handles the processing of inputting the basic information of the account.
+//     *
+//     * @return
+//     */
+//    public ArrayList<Field<String, ?>>  createNewAccount() {
+//        return;
+//    }
+//
+//    /** Create a new credit account. Utilizes the createNewAccount() method.
+//     *
+//     * @return
+//     */
+//    public CreditAccount createNewCreditAccount() {
+//        return;
+//    }
+//
+//    /** Create a new savings account. Utilizes the createNewAccount() method.
+//     *
+//     * @return
+//     */
+//    public SavingsAccount createNewSavingsAccount() {
+//        return;
+//    }
+//
+//    /** Adds a new account to this bank, if the account number of the new account does not exist inside
+//     the bank.
+//     *
+//     * @param account - Account object to be added into this bank.
+//     */
+//    public void addNewAccount(Account account) {
+//
+//    }
+//
+//    /** Checks if an account object exists into a given bank based on some account number.
+//     *
+//     * @param bank - Bank to check if account exists.
+//     * @param accountNum - Account number of target account to check.
+//     * @return
+//     */
+//    public static boolean accountExists(Bank bank, String accountNum) {
+//        return;
+//    }
+//
+//    public String toString() {
+//        return "";
+//    }
 
     /**
      * A comparator that compares if two bank objects are the same.
      */
-    public class BankComparator implements Comparator {
+    public class BankComparator implements Comparator<Bank> {
+        @Override
+        public int compare(Bank b1, Bank b2){
 
+            if (b1.name.compareTo(b2.name) < 0){
+                return -1;
+            }
+            else if (b1.name.compareTo(b2.name) > 0) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
     }
 
-    /**
+        /**
      * A comparator that compares if two bank objects have the same bank id.
      */
-    public class BankIDComparator implements Comparator {
+    public class BankIDComparator implements Comparator<Bank> {
+            @Override
+            public int compare(Bank b1, Bank b2){
 
+                if (b1.ID < b2.ID){
+                    return -1;
+                }
+                else if (b1.ID > b2.ID) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            }
     }
 
     /**
