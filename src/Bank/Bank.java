@@ -69,6 +69,10 @@ public class Bank {
 
     // CLASS METHODS HERE W/ PROPER AND COMPLETE DOC STRINGS
 
+    public String getName() {
+        return name;
+    }
+
     /** Show accounts based on option.
      *
      * @param accountType - Type of account to be shown.
@@ -84,9 +88,9 @@ public class Bank {
      * @param accountNum -  Account number of target account.
      * @return - target Account
      */
-    public Account getBankAccount(Bank bank, String accountNum) {
-        return;
-    }
+//    public Account getBankAccount(Bank bank, String accountNum) {
+//        return;
+//    }
 
     /** Handles the processing of inputting the basic information of the account.
      *
@@ -158,9 +162,9 @@ public class Bank {
      * @param accountNum - Account number of target account to check.
      * @return
      */
-    public static boolean accountExists(Bank bank, String accountNum) {
-        return;
-    }
+//    public static boolean accountExists(Bank bank, String accountNum) {
+//        return;
+//    }
 
     public String toString() {
         return "";
@@ -169,22 +173,76 @@ public class Bank {
     /**
      * A comparator that compares if two bank objects are the same.
      */
-    public class BankComparator implements Comparator {
+    public class BankComparator implements Comparator<Bank> {
+        @Override
+        public int compare(Bank b1, Bank b2){
 
+            if (b1.name.compareTo(b2.name) < 0){
+                return -1;
+            }
+            else if (b1.name.compareTo(b2.name) > 0) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
     }
 
     /**
      * A comparator that compares if two bank objects have the same bank id.
      */
-    public class BankIDComparator implements Comparator {
+    public class BankIDComparator implements Comparator<Bank> {
+            @Override
+            public int compare(Bank b1, Bank b2){
 
+                if (b1.ID < b2.ID){
+                    return -1;
+                }
+                else if (b1.ID > b2.ID) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            }
     }
 
     /**
      * A comparator that compares if two bank objects share the same set of credentials.
      */
-    public class BankCredentialsComparator implements Comparator {
+    public class BankCredentialsComparator implements Comparator<Bank> {
+        /**
+         *
+         * @param b1 the first object to be compared.
+         * @param b2 the second object to be compared.
+         * @return 1 if b1 wins comparison over b2.
+         *         0 if both contact are equal in comparison.
+         *        -1 if b1 loses comparison to b2.
+         */
+        @Override
+        public int compare(Bank b1, Bank b2){
+            int nameComparison = b1.name.compareTo(b2.name);
 
+            if (nameComparison < 0) {
+                return -1;
+            }
+            else if (nameComparison > 0) {
+                return 1;
+            }
+            // Compare passcode if NAME's are EQUAL
+            else {
+                if (b1.passcode.compareTo(b2.passcode) < 0) {
+                    return -1;
+                }
+                else if (b1.passcode.compareTo(b2.passcode) > 0) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            }
+        }
     }
 
 }
