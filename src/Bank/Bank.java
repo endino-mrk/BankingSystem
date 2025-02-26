@@ -1,9 +1,10 @@
-package bank;
+package Bank;
 
-import accounts.Account;
-import accounts.CreditAccount;
-import accounts.SavingsAccount;
-import main.Field;
+import Accounts.Account;
+import Accounts.CreditAccount;
+import Accounts.SavingsAccount;
+import Main.Field;
+import Main.FieldValidator;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -89,26 +90,57 @@ public class Bank {
 
     /** Handles the processing of inputting the basic information of the account.
      *
-     * @return
+     * @return Array list of Field objects, which are the basic account information of the account user.
      */
     public ArrayList<Field<String, ?>>  createNewAccount() {
-        return;
+        // Array List containing all user basic info of Field type
+        ArrayList<Field<String, ?>> fields = new ArrayList<>();
+
+        // Create Field objects for every basic info
+        Field<String, Integer> accountNumber = new Field("account number", String.class, 12, new Field.StringFieldLengthValidator());
+        Field<String, String> fName = new Field("first name", String.class, "", new Field.StringFieldValidator());
+        Field<String, String> lName = new Field("last name", String.class, "", new Field.StringFieldValidator());
+        Field<String, String> email = new Field("email", String.class, "", new Field.StringFieldValidator());
+        Field<String, Integer> pin = new Field("pin", String.class, 6, new Field.StringFieldLengthValidator());
+
+        // Set every Field's value
+        accountNumber.setFieldValue("Enter account number (must be 12 digits): ");
+        fName.setFieldValue("Enter first name: ");
+        lName.setFieldValue("Enter last name: ");
+        email.setFieldValue("Enter email address: ");
+        pin.setFieldValue("Enter pin (must be 6 digits): ");
+
+        // Add each Field to the info ArrayList
+        fields.add(accountNumber);
+        fields.add(fName);
+        fields.add(lName);
+        fields.add(email);
+        fields.add(pin);
+
+        return fields;
     }
 
     /** Create a new credit account. Utilizes the createNewAccount() method.
      *
-     * @return
+     * @return A new Credit Account
      */
     public CreditAccount createNewCreditAccount() {
-        return;
+        ArrayList<Field<String, ?>> info = createNewAccount();
+        return new CreditAccount(this, info.get(0).getFieldValue(), info.get(1).getFieldValue(), info.get(2).getFieldValue(), info.get(3).getFieldValue(), info.get(4).getFieldValue());
     }
 
     /** Create a new savings account. Utilizes the createNewAccount() method.
      *
-     * @return
+     * @return A new Savings Account
      */
     public SavingsAccount createNewSavingsAccount() {
-        return;
+        ArrayList<Field<String, ?>> info = createNewAccount();
+
+        // Initializes and sets initial balance of account
+        Field<Double, Double> balance = new Field("balance", Double.class, 0.0, new Field.DoubleFieldValidator());
+        balance.setFieldValue("Enter initial balance: ");
+
+        return new SavingsAccount(this, info.get(0).getFieldValue(), info.get(1).getFieldValue(), info.get(2).getFieldValue(), info.get(3).getFieldValue(), info.get(4).getFieldValue(),balance.getFieldValue());
     }
 
     /** Adds a new account to this bank, if the account number of the new account does not exist inside

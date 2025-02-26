@@ -1,0 +1,8 @@
+LOGIC FOR CREATION OF BANK ACCOUNTS
+
+in Bank.CreateNewAccount()
+- receives accountNumber, ownerFName, ownerLName, ownerEmail, pin
+- returns an ArrayList of Field objects for each field above
+
+in Bank.CreateNewSavingsAccount()
+- return a SavingsAccount
