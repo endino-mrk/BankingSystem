@@ -79,7 +79,17 @@ public class Bank {
      * @param <T>
      */
     public <T> void showAccounts(Class<T> accountType) {
+        int count = 0;
+        for (Account a : this.BANKACCOUNTS) {
+            if (a.getClass().equals(accountType)) {
+                System.out.println(a + "\n");
+                count += 1;
+            }
+        }
 
+        if (count == 0) {
+            System.out.println("No accounts of this type found in the bank.");
+        }
     }
 
     /** Get the Account object (if it exists) from a given bank.
@@ -88,9 +98,14 @@ public class Bank {
      * @param accountNum -  Account number of target account.
      * @return - target Account
      */
-//    public Account getBankAccount(Bank bank, String accountNum) {
-//        return;
-//    }
+    public Account getBankAccount(Bank bank, String accountNum) {
+        for (Account a : bank.BANKACCOUNTS) {
+            if (a.getAccountNumber() == accountNum) {
+                return a;
+            }
+        }
+        return null;
+    }
 
     /** Handles the processing of inputting the basic information of the account.
      *
