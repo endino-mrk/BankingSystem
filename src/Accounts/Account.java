@@ -42,5 +42,8 @@ public abstract class Account {
 
     // CLASS METHODS HERE W/ PROPER AND COMPLETE DOC STRINGS
 
+    public String getAccountNumber(){
+        return this.ACCOUNTNUMBER;
+    }
 
 }

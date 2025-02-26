@@ -153,7 +153,15 @@ public class Bank {
      * @param account - Account object to be added into this bank.
      */
     public void addNewAccount(Account account) {
-
+        // Checks if the account already exists in the bank
+        for(Account acc: BANKACCOUNTS){
+            if(acc.getAccountNumber().equals(account.getAccountNumber())){
+                System.out.println("This account already exists in this bank.");
+                return;
+            }
+        }
+        BANKACCOUNTS.add(account);
+        System.out.println("Account added sucessfully.");
     }
 
     /** Checks if an account object exists into a given bank based on some account number.
@@ -162,9 +170,15 @@ public class Bank {
      * @param accountNum - Account number of target account to check.
      * @return
      */
-//    public static boolean accountExists(Bank bank, String accountNum) {
-//        return;
-//    }
+    public static boolean accountExists(Bank bank, String accountNum) {
+        // Iterates over the bank's BANKACCOUNTS to see if there already exists on the given account number
+        for(Account acc: bank.BANKACCOUNTS){
+            if(acc.getAccountNumber().equals(accountNum)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public String toString() {
         return "";
