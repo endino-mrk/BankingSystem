@@ -196,7 +196,8 @@ public class Bank {
     }
 
     public String toString() {
-        return "";
+        return this.ID + " - " + this.name;
+
     }
 
     /**
