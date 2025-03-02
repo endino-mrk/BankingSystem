@@ -79,7 +79,17 @@ public class Bank {
      * @param <T>
      */
     public <T> void showAccounts(Class<T> accountType) {
+        int count = 0;
+        for (Account a : this.BANKACCOUNTS) {
+            if (a.getClass().equals(accountType)) {
+                System.out.println(a + "\n");
+                count += 1;
+            }
+        }
 
+        if (count == 0) {
+            System.out.println("No accounts of this type found in the bank.");
+        }
     }
 
     /** Get the Account object (if it exists) from a given bank.
@@ -88,9 +98,14 @@ public class Bank {
      * @param accountNum -  Account number of target account.
      * @return - target Account
      */
-//    public Account getBankAccount(Bank bank, String accountNum) {
-//        return;
-//    }
+    public Account getBankAccount(Bank bank, String accountNum) {
+        for (Account a : bank.BANKACCOUNTS) {
+            if (a.getAccountNumber() == accountNum) {
+                return a;
+            }
+        }
+        return null;
+    }
 
     /** Handles the processing of inputting the basic information of the account.
      *
@@ -153,7 +168,15 @@ public class Bank {
      * @param account - Account object to be added into this bank.
      */
     public void addNewAccount(Account account) {
-
+        // Checks if the account already exists in the bank
+        for(Account acc: BANKACCOUNTS){
+            if(acc.getAccountNumber().equals(account.getAccountNumber())){
+                System.out.println("This account already exists in this bank.");
+                return;
+            }
+        }
+        BANKACCOUNTS.add(account);
+        System.out.println("Account added sucessfully.");
     }
 
     /** Checks if an account object exists into a given bank based on some account number.
@@ -162,12 +185,19 @@ public class Bank {
      * @param accountNum - Account number of target account to check.
      * @return
      */
-//    public static boolean accountExists(Bank bank, String accountNum) {
-//        return;
-//    }
+    public static boolean accountExists(Bank bank, String accountNum) {
+        // Iterates over the bank's BANKACCOUNTS to see if there already exists on the given account number
+        for(Account acc: bank.BANKACCOUNTS){
+            if(acc.getAccountNumber().equals(accountNum)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public String toString() {
-        return "";
+        return this.ID + " - " + this.name;
+
     }
 
     /**
