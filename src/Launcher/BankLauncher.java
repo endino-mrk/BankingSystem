@@ -1,6 +1,6 @@
-package launcher;
+package Launcher;
 
-import bank.Bank;
+import Bank.Bank;
 
 import java.util.ArrayList;
 

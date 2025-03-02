@@ -1,8 +1,9 @@
-package test.bankTest;
+package Test.bankTest;
 
-import bank.Bank;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import Bank.Bank;
+//import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class bankCompare {
 

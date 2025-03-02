@@ -1,4 +1,4 @@
-package main;
+package Main;
 
 /**
  * An enumeration of menu options for every different menu in the
@@ -25,7 +25,6 @@ public enum Menu {
      * Main.Menu option inside Bank.Bank module to show a particular set of accounts.
      */
     ShowAccounts(new String[]{ "Credit Accounts", "Savings Accounts", "All Accounts", "Go Back" }, 32),
-
     /**
      * Accounts.Account type selection menu. Used when creating New Accounts for every Bank.Bank.
      */
@@ -55,5 +54,9 @@ public enum Menu {
             }
         }
         return null;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(Menu.values());
     }
 }

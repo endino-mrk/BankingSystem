@@ -1,8 +1,8 @@
-package accounts;
+package Accounts;
 
-import bank.Bank;
-import transactions.Payment;
-import transactions.Recompense;
+import Bank.Bank;
+import Transactions.Payment;
+import Transactions.Recompense;
 
 public class CreditAccount extends Account implements Payment, Recompense {
     private double loan;
@@ -21,6 +21,10 @@ public class CreditAccount extends Account implements Payment, Recompense {
     }
 
     // CLASS METHODS HERE W/ PROPER AND COMPLETE DOC STRINGS
+
+    public double getLoan() {
+        return loan;
+    }
 
     /**
      *

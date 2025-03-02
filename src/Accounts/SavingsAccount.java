@@ -1,11 +1,12 @@
-package accounts;
+package Accounts;
 
-import bank.Bank;
-import transactions.Deposit;
-import transactions.FundTransfer;
-import transactions.Withdrawal;
+import Bank.Bank;
+import Transactions.Deposit;
+import Transactions.FundTransfer;
+import Transactions.Withdrawal;
 
 public class SavingsAccount extends Account implements Withdrawal, Deposit, FundTransfer {
+
     private double balance;
 
     /**
@@ -25,6 +26,10 @@ public class SavingsAccount extends Account implements Withdrawal, Deposit, Fund
 
 
     // CLASS METHODS HERE W/ PROPER AND COMPLETE DOC STRINGS
+
+    public double getBalance() {
+        return balance;
+    }
 
     /**
      *
