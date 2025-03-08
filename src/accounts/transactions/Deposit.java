@@ -1,4 +1,4 @@
-package Transactions;
+package accounts.transactions;
 
 public interface Deposit {
 

@@ -1,4 +1,4 @@
-package Transactions;
+package accounts.transactions;
 
 /**
  * Class containing Transaction enums.
@@ -30,5 +30,9 @@ public class Transaction {
         this.accountNumber = accountNumber;
         this.transactionType = transactionType;
         this.description = description;
+    }
+
+    public String toString() {
+        return "";
     }
 }

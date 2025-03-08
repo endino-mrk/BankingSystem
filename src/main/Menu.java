@@ -1,4 +1,4 @@
-package Main;
+package main;
 
 /**
  * An enumeration of menu options for every different menu in the
@@ -32,12 +32,12 @@ public enum Menu {
     /**
      * CreditAccount type selection menu. Used when logging in as a CreditAccount.
      */
-    CreditAccountMenu(new String[]{ "Show Credits", "Pay", "Recompense", "Show Transactions", "Logout" }, 41),
+    CreditAccountMenu(new String[]{ "Show Credits", "Pay", "Recompense", "Show Accounts.Transactions", "Logout" }, 41),
     /**
      * SavingsAccount type selection menu. Used when logging in as a SavingsAccount.
      */
     SavingsAccountMenu(new String[]{ "Show Balance", "Deposit", "Withdraw", "Fund Transfer",
-            "Show Transactions", "Logout" }, 51);
+            "Show Accounts.Transactions", "Logout" }, 51);
 
     public final String[] menuOptions;
     public final int menuIdx;

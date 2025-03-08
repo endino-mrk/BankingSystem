@@ -1,8 +1,8 @@
-package Accounts;
+package accounts;
 
-import Bank.Bank;
-import Transactions.Payment;
-import Transactions.Recompense;
+import bank.Bank;
+import accounts.transactions.Payment;
+import accounts.transactions.Recompense;
 
 public class CreditAccount extends Account implements Payment, Recompense {
     private double loan;

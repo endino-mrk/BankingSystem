@@ -1,4 +1,4 @@
-package Main;
+package main;
 
 /**
  * A Field Class that is used for data input on times when you are supposed

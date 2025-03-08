@@ -1,8 +1,8 @@
-package Transactions;
+package accounts.transactions;
 
-import Accounts.IllegalAccountType;
-import Accounts.Account;
-import Bank.Bank;
+import accounts.IllegalAccountType;
+import accounts.Account;
+import bank.Bank;
 
 public interface FundTransfer{
     /**

@@ -1,10 +1,9 @@
-package Bank;
+package bank;
 
-import Accounts.Account;
-import Accounts.CreditAccount;
-import Accounts.SavingsAccount;
-import Main.Field;
-import Main.FieldValidator;
+import accounts.Account;
+import accounts.CreditAccount;
+import accounts.SavingsAccount;
+import main.Field;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -71,6 +70,22 @@ public class Bank {
 
     public String getName() {
         return name;
+    }
+
+    public double getDepositLimit() {
+        return depositLimit;
+    }
+
+    public double getWithdrawLimit() {
+        return withdrawLimit;
+    }
+
+    public double getCreditLimit() {
+        return creditLimit;
+    }
+
+    public double getProcessingFee() {
+        return processingFee;
     }
 
     /** Show accounts based on option.
@@ -274,5 +289,8 @@ public class Bank {
             }
         }
     }
+
+
+
 
 }
