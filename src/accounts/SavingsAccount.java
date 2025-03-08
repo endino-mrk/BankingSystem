@@ -30,6 +30,9 @@ public class SavingsAccount extends Account implements Withdrawal, Deposit, Fund
     public double getBalance() {
         return balance;
     }
+    protected void setBalance(double newBalance){
+        this.balance = newBalance;
+    }
 
     /**
      * Validates whether this savings account has enough balance to proceed with such a transaction based on the amount that is to be adjusted.
@@ -39,14 +42,14 @@ public class SavingsAccount extends Account implements Withdrawal, Deposit, Fund
      *  changed.
      */
     private boolean hasEnoughBalance(double amount) {
-        return false;
+        return amount <= this.balance;
     }
 
     /**
      * Warns the account owner that their balance is not enough for the transaction to proceed successfully.
      */
     private void insufficientBalance() {
-
+        System.out.println("Insufficient balance.");
     }
 
     /**
@@ -81,6 +84,11 @@ public class SavingsAccount extends Account implements Withdrawal, Deposit, Fund
 
     @Override
     public boolean transfer(bank.Bank bank, Account account, double amount) throws IllegalAccountType {
+        return false;
+    }
+
+    @Override
+    public boolean transfer(Account account, double amount) throws IllegalAccountType {
         return false;
     }
 }

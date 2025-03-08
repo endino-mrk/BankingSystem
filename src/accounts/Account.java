@@ -49,4 +49,17 @@ public abstract class Account {
     public Bank getBank() {
         return Bank;
     }
+
+    public String getOwnerFullName(){
+        return this.ownerFName + " " + this.ownerLName;
+    }
+    
+    public String toString(){
+        String s = "Bank: " + this.Bank;
+        s += "\nAccount Number: " + this.accountNumber;
+        s += "\nName: " + this.getOwnerFullName();
+        s += "\nEmail: " + this.ownerEmail;
+        s += "\nPin: " + this.pin;
+        return s;
+    }
 }
