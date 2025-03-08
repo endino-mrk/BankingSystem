@@ -81,7 +81,7 @@ public class Bank {
     public <T> void showAccounts(Class<T> accountType) {
         int count = 0;
         for (Account a : this.BANKACCOUNTS) {
-            if (a.getClass().equals(accountType)) {
+            if (accountType.isInstance(a)) {
                 System.out.println(a + "\n");
                 count += 1;
             }
@@ -203,7 +203,7 @@ public class Bank {
     /**
      * A comparator that compares if two bank objects are the same.
      */
-    public class BankComparator implements Comparator<Bank> {
+    public static class BankComparator implements Comparator<Bank> {
         @Override
         public int compare(Bank b1, Bank b2){
 
@@ -222,7 +222,7 @@ public class Bank {
     /**
      * A comparator that compares if two bank objects have the same bank id.
      */
-    public class BankIDComparator implements Comparator<Bank> {
+    public static class BankIDComparator implements Comparator<Bank> {
             @Override
             public int compare(Bank b1, Bank b2){
 
@@ -241,7 +241,7 @@ public class Bank {
     /**
      * A comparator that compares if two bank objects share the same set of credentials.
      */
-    public class BankCredentialsComparator implements Comparator<Bank> {
+    public static class BankCredentialsComparator implements Comparator<Bank> {
         /**
          *
          * @param b1 the first object to be compared.
