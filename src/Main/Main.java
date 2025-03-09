@@ -1,5 +1,7 @@
 package main;
 
+import launcher.BankLauncher;
+
 import java.util.Scanner;
 
 public class Main
@@ -39,12 +41,43 @@ public class Main
             // Bank Option
             else if (getOption() == 2)
             {
-                // TODO: Complete Bank option
+                while(true) {
+                    showMenuHeader("Bank Login Menu");
+                    showMenu(3, 1); // Menu BankLogin: [1]Login [2] Go Back
+                    setOption();
+
+                    // Login
+                    if (getOption() == 1) {
+                        while (true) {
+                            if (BankLauncher.bankSize() == 0) {
+                                System.out.println("\nThere no currently registered banks in the system!");
+                                break;
+                            }
+
+                            // Displays all registered bank names
+                            BankLauncher.showBanksMenu();
+                            BankLauncher.bankLogin();
+
+                            if (!BankLauncher.isLogged()) {
+                                break;
+                            }
+
+                            // initializing bankInit
+                            BankLauncher.bankInit();
+                            break;
+                        }
+                    }
+                    // Go back
+                    else if (getOption() == 2) {
+                        break;
+                    }
+                    break;
+                }
             }
             // Create New Bank
             else if (getOption() == 3)
             {
-                // TODO: Complete this portion...
+                BankLauncher.createNewBank();
             }
             else if (getOption() == 4)
             {
@@ -135,7 +168,7 @@ public class Main
      */
     public static void setOption() throws NumberFormatException
     {
-        option.setFieldValue("Select an option: ");
+        option.setFieldValue("\nSelect an option: ");
     }
 
     /**
@@ -153,6 +186,6 @@ public class Main
      */
     public static void showMenuHeader(String menuTitle)
     {
-        System.out.printf("<---- %s ----->\n", menuTitle);
+        System.out.printf("\n<---- %s ----->\n", menuTitle);
     }
 }

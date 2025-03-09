@@ -1,10 +1,9 @@
-package Bank;
+package bank;
 
-import Accounts.Account;
-import Accounts.CreditAccount;
-import Accounts.SavingsAccount;
-import Main.Field;
-import Main.FieldValidator;
+import accounts.Account;
+import accounts.CreditAccount;
+import accounts.SavingsAccount;
+import main.Field;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -70,7 +69,10 @@ public class Bank {
     // CLASS METHODS HERE W/ PROPER AND COMPLETE DOC STRINGS
 
     public String getName() {
-        return name;
+        return this.name;
+    }
+    public int getID(){
+        return this.ID;
     }
 
     /** Show accounts based on option.
@@ -100,7 +102,7 @@ public class Bank {
      */
     public Account getBankAccount(Bank bank, String accountNum) {
         for (Account a : bank.BANKACCOUNTS) {
-            if (a.getAccountNumber() == accountNum) {
+            if (accountExists(bank, accountNum)) {
                 return a;
             }
         }
@@ -145,7 +147,10 @@ public class Bank {
      */
     public CreditAccount createNewCreditAccount() {
         ArrayList<Field<String, ?>> info = createNewAccount();
-        return new CreditAccount(this, info.get(0).getFieldValue(), info.get(1).getFieldValue(), info.get(2).getFieldValue(), info.get(3).getFieldValue(), info.get(4).getFieldValue());
+
+        CreditAccount new_credAccount = new CreditAccount(this, info.get(0).getFieldValue(), info.get(1).getFieldValue(), info.get(2).getFieldValue(), info.get(3).getFieldValue(), info.get(4).getFieldValue());
+        addNewAccount(new_credAccount);
+        return new_credAccount;
     }
 
     /** Create a new savings account. Utilizes the createNewAccount() method.
@@ -159,7 +164,9 @@ public class Bank {
         Field<Double, Double> balance = new Field("balance", Double.class, 0.0, new Field.DoubleFieldValidator());
         balance.setFieldValue("Enter initial balance: ");
 
-        return new SavingsAccount(this, info.get(0).getFieldValue(), info.get(1).getFieldValue(), info.get(2).getFieldValue(), info.get(3).getFieldValue(), info.get(4).getFieldValue(),balance.getFieldValue());
+        SavingsAccount new_savAccount = new SavingsAccount(this, info.get(0).getFieldValue(), info.get(1).getFieldValue(), info.get(2).getFieldValue(), info.get(3).getFieldValue(), info.get(4).getFieldValue(),balance.getFieldValue());
+        addNewAccount(new_savAccount);
+        return new_savAccount;
     }
 
     /** Adds a new account to this bank, if the account number of the new account does not exist inside
@@ -222,7 +229,7 @@ public class Bank {
     /**
      * A comparator that compares if two bank objects have the same bank id.
      */
-    public class BankIDComparator implements Comparator<Bank> {
+    public static class BankIDComparator implements Comparator<Bank> {
             @Override
             public int compare(Bank b1, Bank b2){
 
@@ -241,7 +248,7 @@ public class Bank {
     /**
      * A comparator that compares if two bank objects share the same set of credentials.
      */
-    public class BankCredentialsComparator implements Comparator<Bank> {
+    public static class BankCredentialsComparator implements Comparator<Bank> {
         /**
          *
          * @param b1 the first object to be compared.
@@ -252,26 +259,33 @@ public class Bank {
          */
         @Override
         public int compare(Bank b1, Bank b2){
-            int nameComparison = b1.name.compareTo(b2.name);
 
-            if (nameComparison < 0) {
+            // Compare IDs first
+            if (b1.ID < b2.ID) {
                 return -1;
             }
-            else if (nameComparison > 0) {
+            if (b1.ID > b2.ID) {
                 return 1;
             }
-            // Compare passcode if NAME's are EQUAL
-            else {
-                if (b1.passcode.compareTo(b2.passcode) < 0) {
-                    return -1;
-                }
-                else if (b1.passcode.compareTo(b2.passcode) > 0) {
-                    return 1;
-                }
-                else {
-                    return 0;
-                }
+
+            // Compare names if IDs are equal
+            if (b1.name.compareTo(b2.name) < 0) {
+                return -1;
             }
+            if (b1.name.compareTo(b2.name) > 0) {
+                return 1;
+            }
+
+            // Compare passcodes if names are also equal
+            if (b1.passcode.compareTo(b2.passcode) < 0) {
+                return -1;
+            }
+            if (b1.passcode.compareTo(b2.passcode) > 0) {
+                return 1;
+            }
+
+            // If everything is equal, return 0
+            return 0;
         }
     }
 
