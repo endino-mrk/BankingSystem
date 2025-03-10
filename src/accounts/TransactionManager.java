@@ -47,13 +47,23 @@ public class TransactionManager{
     private static boolean canCredit(CreditAccount account, double amountAdjustment) {
         return account.getLoan() + amountAdjustment < account.getBank().getCreditLimit();
     }
+    /**
+     * Adjust the owner’s current loan. Result of adjustment cannot be less than 0.
+     * @param account Account to adjust loan.
+     * @param amountAdjustment Amount to adjust
+     */
+    private static void adjustLoanAmount(CreditAccount account, double amountAdjustment){
+        double newLoan = account.getLoan() + amountAdjustment;
 
-    private static void adjustLoanAmount(Account account, double amount){
-
+        if (newLoan > 0){
+            account.setLoan(newLoan);
+        }else {
+            throw new IllegalArgumentException("Loan balance cannot be negative.");
+        }
     }
 
     /**
-     * Deposits an amount to an Account object, must not be greater than the deposit limit of the bank the account belongs to.  
+     * Deposits an amount to an Account object, must not be greater than the deposit limit of the bank the account belongs to.
      * @param account Account to deposit the amount to
      * @param amount Amount to deposit
      * @return
@@ -63,7 +73,7 @@ public class TransactionManager{
     }
 
     /**
-     * 
+     *
      * @param amount
      * @return
      */
@@ -81,14 +91,46 @@ public class TransactionManager{
         return false;
     }
 
+    /**
+     * Recompense some amount of money to the bank and reduce the value of loan recorded in this
+     * account. Must not be greater than the current credit.
+     * @param account account to adjust loan
+     * @param amount Amount to recompense
+     * @return flag
+     */
+    public static boolean recompense(CreditAccount account, double amount) {
 
-    public static boolean recompense(double amount) {
-        return false;
+        if (amount < 0){
+            throw new IllegalArgumentException("Compensation amount must not be negative.");
+        }
+
+        if (amount > account.getLoan())
+            throw new IllegalArgumentException("Compensation amount must exceed current credit.");
+        //subtract amount from loan
+        adjustLoanAmount(account, -amount);
+        return true;
     }
 
+    /**
+     *
+     * @param recipient Target account to pay money into.
+     * @param amount Amount to pay.
+     * @return flag
+     * @throws IllegalAccountType must pay only to savings account
+     */
+    public static boolean pay(Account recipient, CreditAccount source, double amount) throws IllegalAccountType{
+        if (amount < 0){
+            throw new IllegalArgumentException("Payment amount must not be negative.");
+        }
+        if (!(recipient instanceof SavingsAccount)){
+            throw new IllegalAccountType("Must be a savings account");
+        }
+        //add amount from loan
+        adjustLoanAmount(source, amount);
 
-    public static boolean pay(Account account, double amount) throws IllegalAccountType{ 
-        return false;
+        //record
+        //Transaction addNewTransaction = new Transaction(account.getAccountNumber(), Transaction.Transactions.Payment, "Paid " + amount + " to account " + account.getAccountNumber());
+        return true;
     }
 
 

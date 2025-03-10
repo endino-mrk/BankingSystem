@@ -26,6 +26,7 @@ public class CreditAccount extends Account implements Payment, Recompense {
         return loan;
     }
 
+    protected void setLoan(double newLoan) {this.loan = newLoan;}
     /**
      *
      * @param amount Amount of money to be recompensed.
@@ -46,5 +47,13 @@ public class CreditAccount extends Account implements Payment, Recompense {
     @Override
     public boolean pay(Account account, double amount) throws IllegalAccountType {
         return false;
+    }
+
+    public String toString(){
+        String s = "";
+        s += "\nBank: " + this.getBank();
+        s += "\nAccount no.: " + this.getAccountNumber();
+        s += "\nName: " + this.getOwnerFullName();
+        return s;
     }
 }
