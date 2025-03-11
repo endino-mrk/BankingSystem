@@ -1,7 +1,7 @@
-package launcher;
+package Launcher;
 
 import accounts.CreditAccount;
-import bank.*;
+// import bank.*;
 import accounts.Account;
 import accounts.CreditAccount;
 import accounts.SavingsAccount;
@@ -9,6 +9,7 @@ import accounts.Account;
 import main.Main;
 import main.Menu;
 import main.Field;
+import Bank.Bank;
 
 import java.util.ArrayList;
 import java.util.Comparator;

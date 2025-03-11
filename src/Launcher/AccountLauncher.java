@@ -1,7 +1,7 @@
-package launcher;
+package Launcher;
 
-import accounts.Account;
-import bank.Bank;
+import Accounts.Account;
+import Bank.Bank;
 
 public class AccountLauncher {
     private static Account loggedAccount;

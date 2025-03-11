@@ -1,7 +1,7 @@
-package accounts;
+package Accounts;
 
-import bank.Bank;
-import transactions.Transaction;
+import Bank.Bank;
+import Transactions.Transaction;
 
 import java.util.ArrayList;
 
@@ -11,18 +11,42 @@ import java.util.ArrayList;
 public abstract class Account {
     // class attributes, create docstring for each
 
-    private final Bank BANK;
+    private final Bank Bank;
 
-    private final String ACCOUNTNUMBER;
+    private final String accountNumber;
 
-    private final String OWNERFNAME, OWNERLNAME, OWNEREMAIL;
+    private final String ownerFName, ownerLName, ownerEmail;
 
     private String pin;
 
     private final ArrayList<Transaction> TRANSACTIONS;
 
+    public Bank getBank() {
+        return Bank;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public String getOwnerFName() {
+        return ownerFName;
+    }
+
+    public String getOwnerLName() {
+        return ownerLName;
+    }
+
+    public String getOwnerEmail() {
+        return ownerEmail;
+    }
+
+    public String getPin() {
+        return pin;
+    }
+
     /**
-     * complete doc string
+     *
      * @param BANK
      * @param ACCOUNTNUMBER
      * @param OWNERFNAME
@@ -31,11 +55,11 @@ public abstract class Account {
      * @param pin
      */
     public Account(Bank BANK, String ACCOUNTNUMBER, String OWNERFNAME, String OWNERLNAME, String OWNEREMAIL, String pin) {
-        this.BANK = BANK;
-        this.ACCOUNTNUMBER = ACCOUNTNUMBER;
-        this.OWNERFNAME = OWNERFNAME;
-        this.OWNERLNAME = OWNERLNAME;
-        this.OWNEREMAIL = OWNEREMAIL;
+        this.Bank = BANK;
+        this.accountNumber = ACCOUNTNUMBER;
+        this.ownerFName = OWNERFNAME;
+        this.ownerLName = OWNERLNAME;
+        this.ownerEmail = OWNEREMAIL;
         this.pin = pin;
         this.TRANSACTIONS = new ArrayList<>();
     }

@@ -1,4 +1,4 @@
-package main;
+package Main;
 
 /**
  * A Field Class that is used for data input on times when you are supposed
@@ -9,6 +9,7 @@ public class Field<T, E> {
 
     private final Class<T> fieldType;
     private final String fieldName;
+    // Value received from user input
     private T fieldValue;
     private final E threshold;
     private final FieldValidator<T, E> fieldValidator;

@@ -1,4 +1,4 @@
-package transactions;
+package Transactions;
 
 /**
  * Class containing Transaction enums.

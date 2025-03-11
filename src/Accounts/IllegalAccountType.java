@@ -1,4 +1,4 @@
-package accounts;
+package Accounts;
 
 /**
  * This error is thrown when some bank account process is handled
