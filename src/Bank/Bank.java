@@ -83,7 +83,7 @@ public class Bank {
     public <T> void showAccounts(Class<T> accountType) {
         int count = 0;
         for (Account a : this.BANKACCOUNTS) {
-            if (a.getClass().equals(accountType)) {
+            if (accountType.isInstance(a)) {
                 System.out.println(a + "\n");
                 count += 1;
             }
@@ -210,7 +210,7 @@ public class Bank {
     /**
      * A comparator that compares if two bank objects are the same.
      */
-    public class BankComparator implements Comparator<Bank> {
+    public static class BankComparator implements Comparator<Bank> {
         @Override
         public int compare(Bank b1, Bank b2){
 
