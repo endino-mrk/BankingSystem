@@ -1,12 +1,14 @@
-package Accounts;
+package accounts;
 
-import Bank.Bank;
-import Transactions.Deposit;
-import Transactions.FundTransfer;
-import Transactions.Withdrawal;
+import accounts.transactions.Depositable;
+import accounts.transactions.Transferrable;
+import accounts.transactions.Withdrawable;
+import accounts.transactions.Transaction.Transactions;
+import bank.Bank;
+import accounts.transactions.TransactionService;
 
-public class SavingsAccount extends Account implements Withdrawal, Deposit, FundTransfer {
 
+public class SavingsAccount extends Account implements Withdrawable, Depositable, Transferrable {
     private double balance;
 
     /**
@@ -27,10 +29,32 @@ public class SavingsAccount extends Account implements Withdrawal, Deposit, Fund
 
     // CLASS METHODS HERE W/ PROPER AND COMPLETE DOC STRINGS
 
-    public double getBalance() {
-        return balance;
+    /*
+     * protected sa sya kay para same package lang maka access
+     */
+    @Override
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
+    @Override
+    public double getBalance() {
+        return this.balance;
+    }
+    
+    // private boolean hasEnoughBalance(double amount) {
+    //     return this.balance - amount >= 0;
+    // }
+
+    // private void insufficientBalance() {
+    //     System.out.println("Account has insufficient balance.");
+    // }
+
+    // private void adjustAccountBalance(double amount) {
+    //     this.balance += amount;
+    // } 
+
+    
     /**
      *
      * @param amount Amount to be deposited.
@@ -38,6 +62,24 @@ public class SavingsAccount extends Account implements Withdrawal, Deposit, Fund
      */
     @Override
     public boolean cashDeposit(double amount) {
+        if (TransactionService.cashDeposit(getBank(), this, amount)) {
+            addNewTransaction(getAccountNumber(), Transactions.Deposit, "Deposited to this account");
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     *
+     * @param amount Amount of money to be withdrawn from.
+     * @return
+     */
+    @Override
+    public boolean withdrawal(double amount) {
+        if (TransactionService.withdraw(getBank(), this, amount)) {
+            addNewTransaction(getAccountNumber(), Transactions.Withdraw,"Withdrawed from this account");
+            return true;
+        }
         return false;
     }
 
@@ -60,7 +102,8 @@ public class SavingsAccount extends Account implements Withdrawal, Deposit, Fund
      */
     @Override
     public boolean transfer(Bank bank, Account account, double amount) throws IllegalAccountType {
-        return false;
+       return transfer(account, amount + bank.getProcessingFee());
+            
     }
 
     /**
@@ -72,16 +115,12 @@ public class SavingsAccount extends Account implements Withdrawal, Deposit, Fund
      */
     @Override
     public boolean transfer(Account account, double amount) throws IllegalAccountType {
+        if (TransactionService.transfer(getBank(), this, account, amount)) {
+            addNewTransaction(getAccountNumber(), Transactions.FundTransfer, "Transferred from this account");
+            return true;
+        }
         return false;
     }
 
-    /**
-     *
-     * @param amount Amount of money to be withdrawn from.
-     * @return
-     */
-    @Override
-    public boolean withdrawal(double amount) {
-        return false;
-    }
+
 }

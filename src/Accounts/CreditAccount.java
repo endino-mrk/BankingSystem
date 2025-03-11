@@ -1,10 +1,12 @@
-package Accounts;
+package accounts;
 
-import Bank.Bank;
-import Transactions.Payment;
-import Transactions.Recompense;
+import accounts.transactions.Compensable;
+import accounts.transactions.Payable;
+import accounts.transactions.TransactionService;
+import accounts.transactions.Transaction.Transactions;
+import bank.Bank;
 
-public class CreditAccount extends Account implements Payment, Recompense {
+public class CreditAccount extends Account implements Payable, Compensable {
     private double loan;
 
     /**
@@ -22,18 +24,14 @@ public class CreditAccount extends Account implements Payment, Recompense {
 
     // CLASS METHODS HERE W/ PROPER AND COMPLETE DOC STRINGS
 
-    public double getLoan() {
-        return loan;
+    @Override
+    public void setLoan(double loan) {
+        this.loan = loan;
     }
 
-    /**
-     *
-     * @param amount Amount of money to be recompensed.
-     * @return
-     */
     @Override
-    public boolean recompense(double amount) {
-        return false;
+    public double getLoan() {
+        return this.loan;
     }
 
     /**
@@ -45,6 +43,28 @@ public class CreditAccount extends Account implements Payment, Recompense {
      */
     @Override
     public boolean pay(Account account, double amount) throws IllegalAccountType {
+        if (!(account instanceof BalanceHolder)) {
+            throw new IllegalAccountType("Cannot pay to account.");
+        }
+
+        if (TransactionService.pay(getBank(), this, (BalanceHolder) account, amount)) {
+            addNewTransaction(getAccountNumber(), Transactions.Payment, "Paid to account");
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     *
+     * @param amount Amount of money to be recompensed.
+     * @return
+     */
+    @Override
+    public boolean recompense(double amount) {
+        if (TransactionService.recompense(this, amount)) {
+            addNewTransaction(getAccountNumber(), Transactions.Recompense, "Recompensed loan");
+            return true;
+        }
         return false;
     }
 }

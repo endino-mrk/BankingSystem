@@ -1,9 +1,10 @@
-package Accounts;
+package accounts;
 
-import Bank.Bank;
-import Transactions.Transaction;
+import bank.Bank;
 
 import java.util.ArrayList;
+
+import accounts.transactions.Transaction;
 
 /**
  * An abstract account class that has comparators to compare itself with different account objects.
@@ -19,55 +20,39 @@ public abstract class Account {
 
     private String pin;
 
-    private final ArrayList<Transaction> TRANSACTIONS;
+    private final ArrayList<Transaction> Transactions;
 
-    public Bank getBank() {
-        return Bank;
+    /**
+     *
+     * @param bank
+     * @param accountnumber
+     * @param ownerfname
+     * @param ownerlname
+     * @param owneremail
+     * @param pin
+     */
+    public Account(Bank bank, String accountnumber, String ownerfname, String ownerlname, String owneremail, String pin) {
+        this.Bank = bank;
+        this.accountNumber = accountnumber;
+        this.ownerFName = ownerfname;
+        this.ownerLName = ownerlname;
+        this.ownerEmail = owneremail;
+        this.pin = pin;
+        this.Transactions = new ArrayList<>();
     }
+
+    // CLASS METHODS HERE W/ PROPER AND COMPLETE DOC STRINGS
 
     public String getAccountNumber() {
         return accountNumber;
     }
 
-    public String getOwnerFName() {
-        return ownerFName;
+    public Bank getBank() {
+        return Bank;
     }
 
-    public String getOwnerLName() {
-        return ownerLName;
-    }
+    public void addNewTransaction(String accountNum, Transaction.Transactions type, String description) {
 
-    public String getOwnerEmail() {
-        return ownerEmail;
-    }
-
-    public String getPin() {
-        return pin;
-    }
-
-    /**
-     *
-     * @param BANK
-     * @param ACCOUNTNUMBER
-     * @param OWNERFNAME
-     * @param OWNERLNAME
-     * @param OWNEREMAIL
-     * @param pin
-     */
-    public Account(Bank BANK, String ACCOUNTNUMBER, String OWNERFNAME, String OWNERLNAME, String OWNEREMAIL, String pin) {
-        this.Bank = BANK;
-        this.accountNumber = ACCOUNTNUMBER;
-        this.ownerFName = OWNERFNAME;
-        this.ownerLName = OWNERLNAME;
-        this.ownerEmail = OWNEREMAIL;
-        this.pin = pin;
-        this.TRANSACTIONS = new ArrayList<>();
-    }
-
-    // CLASS METHODS HERE W/ PROPER AND COMPLETE DOC STRINGS
-
-    public String getAccountNumber(){
-        return this.ACCOUNTNUMBER;
     }
 
 }
