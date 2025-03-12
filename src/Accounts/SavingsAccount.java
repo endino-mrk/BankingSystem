@@ -62,7 +62,7 @@ public class SavingsAccount extends Account implements Withdrawable, Depositable
      */
     @Override
     public boolean cashDeposit(double amount) {
-        if (TransactionService.cashDeposit(getBank(), this, amount)) {
+        if (TransactionService.deposit(getBank(), this, amount)) {
             addNewTransaction(getAccountNumber(), Transactions.Deposit, "Deposited to this account");
             return true;
         }
@@ -102,8 +102,11 @@ public class SavingsAccount extends Account implements Withdrawable, Depositable
      */
     @Override
     public boolean transfer(Bank bank, Account account, double amount) throws IllegalAccountType {
-       return transfer(account, amount + bank.getProcessingFee());
-            
+        // Can only transfer if recipient account exists on recipient bank
+        if (Bank.accountExists(bank, account.getAccountNumber())) {
+            return transfer(account, amount + this.getBank().getProcessingFee());
+        }
+        return false;
     }
 
     /**

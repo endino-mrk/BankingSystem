@@ -1,18 +1,13 @@
-package Launcher;
+package launcher;
 
-import accounts.CreditAccount;
 // import bank.*;
 import accounts.Account;
-import accounts.CreditAccount;
 import accounts.SavingsAccount;
-import accounts.Account;
-import main.Main;
-import main.Menu;
 import main.Field;
-import Bank.Bank;
+import bank.Bank;
+import main.Main;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Random;
 
 public class BankLauncher {
@@ -27,7 +22,7 @@ public class BankLauncher {
      * @return boolean - true if user is logged in, false otherwise
      */
     public static boolean isLogged() {
-        return loggedBank.getClass().equals(Bank.class);
+        return loggedBank != null;
     }
 
     /**
@@ -67,30 +62,30 @@ public class BankLauncher {
      * Displays the account menu, allowing users to view accounts.
      */
     private static void showAccounts() {
+        label: 
         while (true){
             Main.showMenuHeader("Show Accounts");
             Main.showMenu(32);
             String opt = Main.prompt("\nSelect an option: ", true);
 
-            label: 
             switch (opt) {
                 // Show All Credit Accounts
                 case "1":
                     Main.showMenuHeader("All Credit Accounts");
                     loggedBank.showAccounts(accounts.CreditAccount.class);
-                    break label;
+                    break;
 
                     // Show All Savings Accounts
                 case "2":
                     Main.showMenuHeader("All Savings Accounts");
                     loggedBank.showAccounts(SavingsAccount.class);
-                    break label;
+                    break;
 
                     // Show All Accounts
                 case "3":
                     Main.showMenuHeader("All Accounts");
                     loggedBank.showAccounts(Account.class);
-                    break label;
+                    break;
 
                 case "4":
                     break label;
@@ -110,7 +105,7 @@ public class BankLauncher {
         Main.showMenu(33);
         String opt = Main.prompt("\nSelect an option: ", true);
 
-        Accounts.Account a = null;
+        accounts.Account a = null;
 
         switch (opt) {
             case "1":
@@ -150,7 +145,7 @@ public class BankLauncher {
 
             if (b != null) {
                 setLogSession(b);
-                System.out.println("Logged in to " + name + "bank.");
+                System.out.println("Logged in to " + name + " bank.");
             } else {
                 System.out.println("Login failed. Invalid credentials.");
             }
@@ -184,25 +179,24 @@ public class BankLauncher {
     /**
      * Bank creation interface.
      * 
-     * @throws NumberFormatException Thrown when an invalid input is given 
-     *  for deposit, withdraw, credit limit, and processing fee.
+     * @throws NumberFormatException Thrown when an invalid input is given for deposit, withdraw, credit limit, and processing fee.
      */
     public static void createNewBank() throws NumberFormatException{
         Main.showMenuHeader("Creating a New Bank");
 
         Random rand = new Random();
-        int bank_id = 20250000;
+        int bankID = 20250000;
 
         // Generates randomized ID for Bank ID
         while (true) {
-            int rand_number = rand.nextInt(9999);
-            bank_id += rand_number;
-            Bank temporary = new Bank(bank_id, "", "");
+            // int rand_number = rand.nextInt(9999);
+            bankID += rand.nextInt(9999);
+            // Bank temporary = new Bank(bank_id, "", "");
 
             // Checks if the randomized ID already exist in the banks
             boolean doesExist = false;
-            for (Bank b : Bank) {
-                if (new Bank.BankIDComparator().compare(b, temporary) == 0) {
+            for (Bank b : Banks) {
+                if (new Bank.BankIDComparator().compare(b, new Bank(bankID, "", "")) == 0) {
                     doesExist = true;
                     break;
                 }
@@ -211,44 +205,52 @@ public class BankLauncher {
             if (!doesExist){break;}
         }
 
-        Field<String, String> bank_name = new Field<>("bank name", String.class, "", new Field.StringFieldValidator());
-        Field<String, Integer> bank_passcode = new Field<>("bank passcode", String.class, 8, new Field.StringFieldLengthValidator());
+        Field<String, String> bankName = new Field<>("Bank Name", String.class, "", new Field.StringFieldValidator());
+        Field<String, Integer> bankPasscode = new Field<>("Bank Passcode", String.class, 8, new Field.StringFieldLengthValidator());
 
-        System.out.println("Generated Bank ID: " + bank_id);
-        bank_name.setFieldValue("Enter Bank Name: ");
-        bank_passcode.setFieldValue("Enter Bank Passcode: ");
-
-        double depositLimit = 50000;
-        double withdrawLimit = 50000;
-        double creditLimit = 100000;
-        double processingFee = 10;
-
+        System.out.println("Generated Bank ID: " + bankID);
+        bankName.setFieldValue("Enter Bank Name: ", false);
+        while (bankPasscode.getFieldValue() == null || bankPasscode.getFieldValue().length() != 8) {
+            bankPasscode.setFieldValue("Enter Bank Passcode (must be exactly 8 digits): ");
+        }
+        
+        // double depositLimit = 50000;
+        // double withdrawLimit = 50000;
+        // double creditLimit = 100000;
+        // double processingFee = 10;
+        
+        // String choice = Main.prompt("Do you want to change the default deposit limit")
         try {
-            String choice = Main.prompt("Change deposit limit? Default is 50000 (type 'y' to change).", true);
-            if (choice.equals("y")) {
-                depositLimit = Double.parseDouble(Main.prompt("Enter new deposit limit: ", true));
-            }
+            boolean validChoice = false;
 
-            choice = Main.prompt("Change withdraw limit? Default is 50000 (type 'y' to change).", true);
-            if (choice.equals("y")) {
-                withdrawLimit = Double.parseDouble(Main.prompt("Enter new withdraw limit: ", true));
-            }
+            while(!(validChoice)) {
+                String choice = Main.prompt("Do you want to change default transaction limits and processing fee? [y/n]: ", true).toLowerCase();
+                if (choice.equals("y")) {
+                    validChoice = true;
 
-            choice = Main.prompt("Change credit limit? Default is 100000 (type 'y' to change).", true);
-            if (choice.equals("y")) {
-                creditLimit = Double.parseDouble(Main.prompt("Enter new credit limit: ", true));
-            }
+                    Field<Double, Double> depositLimit = new Field<>("Deposit Limit", Double.class, 0.0, new Field.DoubleFieldValidator());
+                    Field<Double, Double> withdrawLimit = new Field<>("Withdraw Limit", Double.class, 0.0, new Field.DoubleFieldValidator());
+                    Field<Double, Double> creditLimit = new Field<>("Credit Limit", Double.class, 0.0, new Field.DoubleFieldValidator());
+                    Field<Double, Double> processingFee = new Field<>("Processing Fee", Double.class, 0.0, new Field.DoubleFieldValidator());
 
-            choice = Main.prompt("Change processing fee? Default is 10 (type 'y' to change).", true);
-            if (choice.equals("y")) {
-                processingFee = Double.parseDouble(Main.prompt("Enter new processing fee: ", true));
+                    depositLimit.setFieldValue("Enter deposit limit: ");
+                    withdrawLimit.setFieldValue("Enter withdraw limit: ");
+                    creditLimit.setFieldValue("Enter credit limit: ");
+                    processingFee.setFieldValue("Enter processing fee: ");
+
+                    addBank(new Bank(bankID, bankName.getFieldValue(), bankPasscode.getFieldValue(), depositLimit.getFieldValue(), withdrawLimit.getFieldValue(), creditLimit.getFieldValue(),processingFee.getFieldValue()));
+                }
+                else if (choice.equals("n")) {
+                    addBank(new Bank(bankID, bankName.getFieldValue(), bankPasscode.getFieldValue()));
+                    break;
+                } else {
+                    validChoice = false;
+                }
             }
+            System.out.println("Bank succesfully created.");
         } catch (NumberFormatException e) {
             System.out.println("\nError: Invalid number format for deposit limit, withdraw limit, credit limit, or processing fee.");
         }
-
-        addBank(new Bank(bank_id, bank_name.getFieldValue(), bank_passcode.getFieldValue(), depositLimit, withdrawLimit, creditLimit, processingFee));
-        System.out.println("New bank successfully created!");
     }
 
     /**
@@ -265,7 +267,7 @@ public class BankLauncher {
     public static void showBanksMenu () {
         Main.showMenuHeader("Registered Banks");
         int count = 1;
-        for (Bank b : Bank) {
+        for (Bank b : Banks) {
             System.out.printf("[ %d ] %s \n", count, b.toString());
             count++;
         }
@@ -295,13 +297,12 @@ public class BankLauncher {
      * @return the matching account if found, otherwise null
      */
 
-    public static Accounts.Account findAccount(String accountNumber) {
+    public static Account findAccount(String accountNumber) {
         for (Bank b : Banks) {
             if (Bank.accountExists(b, accountNumber)) {
                 return loggedBank.getBankAccount(b, accountNumber);
             }
         }
-
         return null;
     }
 
@@ -310,7 +311,7 @@ public class BankLauncher {
      * @return the size of the bank list
      */
     public static int bankSize () {
-        return Bank.size();
+        return Banks.size();
 
     }
 

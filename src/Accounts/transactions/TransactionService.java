@@ -1,6 +1,7 @@
 package accounts.transactions;
 import accounts.BalanceHolder;
 import bank.Bank;
+import launcher.BankLauncher;
 import accounts.IllegalAccountType;
 import accounts.Account;
 import accounts.LoanHolder;
@@ -45,7 +46,7 @@ public class TransactionService {
      * @param amount Amount of money to be deposited to the account.
      * @return Flag if transaction is successful or not.
      */
-    public static boolean cashDeposit(Bank bank, Depositable account, double amount) {
+    public static boolean deposit(Bank bank, Depositable account, double amount) {
         // Amount must not go above bank deposit limit.
         if (amount <= bank.getDepositLimit()) {
             adjustAccountBalance(account, amount);
@@ -86,23 +87,25 @@ public class TransactionService {
             throw new IllegalAccountType("Recipient account cannot receive fund transfers.");
         }
 
-        
-        if(hasEnoughBalance(source, amount)) {
-            // Subtracts amount from source account balance
-            adjustAccountBalance(source, -amount);
-            
-            // If transferring to another bank, adjusts amount so processing fee is not accounted for in the fund transfer amount
-            if (!(Bank.accountExists(sourceBank, recipient.getAccountNumber()))) {
-                amount -= recipient.getBank().getProcessingFee();
-            }
-
-            // Adds amount to recipient account balance
-            adjustAccountBalance((BalanceHolder) recipient, amount); 
-            System.out.printf("Successfully transferred %.2f from this account to account with account number %s", amount, recipient.getAccountNumber());
-            return true;
-        }   
-        
-        insufficientBalance();
+        if(BankLauncher.findAccount(recipient.getAccountNumber()) != null) {
+            if(hasEnoughBalance(source, amount)) {
+                // Subtracts amount from source account balance
+                adjustAccountBalance(source, -amount);
+                
+                // If transferring to another bank, adjusts amount so processing fee is not accounted for in the fund transfer amount
+                if (!(Bank.accountExists(sourceBank, recipient.getAccountNumber()))) {
+                    amount -= sourceBank.getProcessingFee();
+                }
+    
+                // Adds amount to recipient account balance
+                adjustAccountBalance((BalanceHolder) recipient, amount); 
+                System.out.printf("Successfully transferred %.2f from this account to account with account number %s", amount, recipient.getAccountNumber());
+                return true;
+            } 
+            insufficientBalance();
+        } else {
+            System.out.println("Recipient account does not exist.");
+        }
         return false;
     }
 

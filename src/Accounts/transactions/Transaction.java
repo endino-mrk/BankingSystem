@@ -31,4 +31,8 @@ public class Transaction {
         this.transactionType = transactionType;
         this.description = description;
     }
+
+    public String toString() {
+        return String.format("[%s - %s]\n-- %s", transactionType, accountNumber, description);
+    }
 }

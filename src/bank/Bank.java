@@ -3,6 +3,7 @@ package bank;
 import accounts.Account;
 import accounts.CreditAccount;
 import accounts.SavingsAccount;
+import launcher.BankLauncher;
 import main.Field;
 
 import java.util.ArrayList;
@@ -71,8 +72,13 @@ public class Bank {
     public String getName() {
         return this.name;
     }
+
     public int getID(){
         return this.ID;
+    }
+
+    public double getProcessingFee() {
+        return processingFee;
     }
 
     /** Show accounts based on option.
@@ -125,7 +131,13 @@ public class Bank {
         Field<String, Integer> pin = new Field("pin", String.class, 6, new Field.StringFieldLengthValidator());
 
         // Set every Field's value
-        accountNumber.setFieldValue("Enter account number (must be 12 digits): ");
+        
+        // Account numbers must be unique across all accounts regardless of bank
+        while (true) {
+            accountNumber.setFieldValue("Enter account number (must be 12 digits): ");
+            if (BankLauncher.findAccount(accountNumber.getFieldValue()) == null) {break;} 
+        }
+        
         fName.setFieldValue("Enter first name: ");
         lName.setFieldValue("Enter last name: ");
         email.setFieldValue("Enter email address: ");
@@ -177,7 +189,7 @@ public class Bank {
     public void addNewAccount(Account account) {
         // Checks if the account already exists in the bank
         for(Account acc: BANKACCOUNTS){
-            if(acc.getAccountNumber().equals(account.getAccountNumber())){
+            if(accountExists(this, acc.getAccountNumber())){
                 System.out.println("This account already exists in this bank.");
                 return;
             }

@@ -1,11 +1,10 @@
 package Test.bankTest;
-import Bank.Bank;
+import bank.Bank;
 //import Main.Main;
 
 import Accounts.SavingsAccount;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
-import java.util.Scanner;
 
 public class TestCreateAccount {
 //    Scanner input = new Scanner(System.in);
