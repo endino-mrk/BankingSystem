@@ -77,6 +77,18 @@ public class Bank {
         return this.ID;
     }
 
+    public double getDepositLimit() {
+        return depositLimit;
+    }
+
+    public double getWithdrawLimit() {
+        return withdrawLimit;
+    }
+
+    public double getCreditLimit() {
+        return creditLimit;
+    }
+
     public double getProcessingFee() {
         return processingFee;
     }

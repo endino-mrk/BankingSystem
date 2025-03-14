@@ -47,6 +47,22 @@ public abstract class Account {
         return accountNumber;
     }
 
+    public String getOwnerFName() {
+        return ownerFName;
+    }
+
+    public String getOwnerLName() {
+        return ownerLName;
+    }
+
+    public String getOwnerEmail() {
+        return ownerEmail;
+    }
+
+    public String getOwnerFullName() {
+        return ownerFName + ownerLName;
+    }
+
     public Bank getBank() {
         return Bank;
     }
@@ -55,4 +71,7 @@ public abstract class Account {
 
     }
 
+    public String getTransactionsInfo() {
+        return "";
+    }
 }
