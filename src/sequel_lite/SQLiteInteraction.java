@@ -146,7 +146,7 @@ public class SQLiteInteraction {
      * Creates a new table in the SQL database.
      * 
      * @param name Table name.
-     * @param sqlparameters Columns for the table.
+     * @param sqlparameters Columns for the table. Use commas when adding multiple columns.
      */
     public static void createTable(String name, String sqlparameters) {
         String sql = String.format("CREATE TABLE %s (%s);", name, sqlparameters);
@@ -171,7 +171,7 @@ public class SQLiteInteraction {
      * Updates one or multiple rows in the specified table.
      * 
      * @param table Table name.
-     * @param sqlkv Format: (column name) = (new value)
+     * @param sqlkv Format: (column name) = (new value). Use commas when modifying multiple rows.
      * @param sqlcondition Condition for selecting which row/s to update. If null, updates all rows in the table.
      */
     public static void update(String table, String sqlkv, String sqlcondition) {
@@ -187,12 +187,12 @@ public class SQLiteInteraction {
     }
 
     /**
-     * Retrieves one or more columns from the rows in the table. Returns null if the database is not initialized.
+     * Retrieves one or more columns from the rows in the table. Returns null if the database is not initialized or if the table doesn't exist.
      * 
      * @param column The columns to retrieve from the table. If null, defaults to '*' (in which case, use select(String) or select(String, String)).
      * @param table Table name.
      * @param rowfilter Condition for selecting which row/s to retrieve from. If null, selects all rows.
-     * @return ResultSet object. Note that getting no actual results <i>still</i> returns a ResultSet.
+     * @return ResultSet object. Note that getting no actual results or an empty table <i>still</i> returns a ResultSet.
      */
     public static ResultSet select(String column, String table, String rowfilter) {
         String sql;
@@ -208,18 +208,18 @@ public class SQLiteInteraction {
     }
 
     /**
-     * Retrieves all the columns from selected rows in the table. Returns null if the database is not initialized.
+     * Retrieves all the columns from selected rows in the table. Returns null if the database is not initialized or if the table doesn't exist.
      * 
      * @param table Table name.
      * @param rowfilter Condition for selecting which row/s to retrieve from. If null, selects all rows (in which case, use select(String) instead).
-     * @return ResultSet object. Note that getting no actual results <i>still</i> returns a ResultSet.
+     * @return ResultSet object. Note that getting no actual results or an empty table <i>still</i> returns a ResultSet.
      */
     public static ResultSet select(String table, String rowfilter) {
         return select(null, table, rowfilter);
     }
 
     /**
-     * Retrieves the entire table. Returns null if the database is not initialized.
+     * Retrieves the entire table. Returns null if the database is not initialized or if the table doesn't exist.
      * 
      * @param table Table name.
      * @return ResultSet object. Note that an empty table <i>still</i> returns a ResultSet.
