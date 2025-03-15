@@ -8,4 +8,4 @@ out/
 *.class
 
 # Specific files to ignore
-sequel_lite/SQLiteTestingGround.java
+src/sequel_lite/SQLiteTestingGround.java
