@@ -38,7 +38,7 @@ public class SQLiteInteraction {
                 System.err.println("Error occurred while attempting to initialize SQL database: " + sqle);
             }
         } catch (ClassNotFoundException cnf) {
-            System.err.println("unless if the jdbc library was erased or was not added as an import, this is not supposed to trigger at all.");
+            System.err.println("unless if the sqlite-jdbc jar file was erased or was somehow not included as an (implicit) import, this is not supposed to trigger at all.");
         }
     }
 
