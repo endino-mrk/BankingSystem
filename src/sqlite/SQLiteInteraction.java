@@ -97,15 +97,17 @@ public class SQLiteInteraction {
      * Executes an SQL command.
      * 
      * @param sqlcommand The SQL command.
+     * @return Flag if update execution is successful.
      */
-    private static void executeUpdate(String sqlcommand) {
+    private static boolean executeUpdate(String sqlcommand) {
         if (!initialized) {
             System.err.println("SQL database not initialized.");
-            return;
+            return false;
         }
 
         try {
             stmt.executeUpdate(sqlcommand);
+            return true;
         } catch (SQLException sqle) {
             if (verbose) {
                 System.err.print("Error occurred while executing SQL command: ");
@@ -113,6 +115,7 @@ public class SQLiteInteraction {
             } else {
                 System.err.println("Error occurred while executing SQL command: " + sqle);
             }
+            return false;
         }
     }
 
@@ -147,11 +150,12 @@ public class SQLiteInteraction {
      * 
      * @param name Table name.
      * @param sqlparameters Columns for the table. Use commas when adding multiple columns.
+     * @return Flag if creation is successful.
      */
-    public static void createTable(String name, String sqlparameters) {
-        String sql = String.format("CREATE TABLE %s (%s);", name, sqlparameters);
+    public static boolean createTable(String name, String sqlparameters) {
+        String sql = String.format("CREATE TABLE IF NOT EXISTS %s (%s);", name, sqlparameters);
         
-        executeUpdate(sql);
+        return executeUpdate(sql);
     }
 
     /**
@@ -160,11 +164,12 @@ public class SQLiteInteraction {
      * @param table Table name.
      * @param sqlparameters Names of the columns in the table to fill for the new row. Number of columns <b>must</b> be equal to the number of values.
      * @param sqlvalues Values of the columns in the table to fill for the new row. Number of values <b>must</b> be equal to the number of columns.
+     * @return Flag if insertion is successful.
      */
-    public static void insert(String table, String sqlparameters, String sqlvalues) {
+    public static boolean insert(String table, String sqlparameters, String sqlvalues) {
         String sql = String.format("INSERT INTO %s (%s) VALUES (%s);", table, sqlparameters, sqlvalues);
 
-        executeUpdate(sql);
+        return executeUpdate(sql);
     }
 
     /**
@@ -173,8 +178,9 @@ public class SQLiteInteraction {
      * @param table Table name.
      * @param sqlkv Format: (column name) = (new value). Use commas when modifying multiple rows.
      * @param sqlcondition Condition for selecting which row/s to update. If null, updates all rows in the table.
+     * @return Flag if update is successful.
      */
-    public static void update(String table, String sqlkv, String sqlcondition) {
+    public static boolean update(String table, String sqlkv, String sqlcondition) {
         String sql;
 
         if (sqlcondition == null) {
@@ -183,7 +189,7 @@ public class SQLiteInteraction {
             sql = String.format("UPDATE %s SET %s WHERE %s;", table, sqlkv, sqlcondition);
         }
 
-        executeUpdate(sql);
+        return executeUpdate(sql);
     }
 
     /**
@@ -233,10 +239,11 @@ public class SQLiteInteraction {
      * 
      * @param table Table name.
      * @param sqlcondition Condition for selecting which row/s to delete.
+     * @return Flag if deletion is successful.
      */
-    public static void delete(String table, String sqlcondition) {
+    public static boolean delete(String table, String sqlcondition) {
         String sql = String.format("DELETE FROM %s WHERE %s;", table, sqlcondition);
 
-        executeUpdate(sql);
+        return executeUpdate(sql);
     }
 }
