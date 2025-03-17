@@ -1,4 +1,4 @@
-package accounts.transactions;
+package transactions;
 import accounts.BalanceHolder;
 
 public interface Withdrawable extends BalanceHolder{

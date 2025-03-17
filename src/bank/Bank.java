@@ -47,6 +47,10 @@ public class Bank {
         this.BANKACCOUNTS = new ArrayList<>();
     }
 
+    public ArrayList<Account> getBANKACCOUNTS() {
+        return BANKACCOUNTS;
+    }
+
     /**
      *
      * @param ID
@@ -143,13 +147,13 @@ public class Bank {
         Field<String, Integer> pin = new Field("pin", String.class, 6, new Field.StringFieldLengthValidator());
 
         // Set every Field's value
-        
+
         // Account numbers must be unique across all accounts regardless of bank
         while (true) {
             accountNumber.setFieldValue("Enter account number (must be 12 digits): ");
-            if (BankLauncher.findAccount(accountNumber.getFieldValue()) == null) {break;} 
+            if (BankLauncher.findAccount(accountNumber.getFieldValue()) == null) {break;}
         }
-        
+
         fName.setFieldValue("Enter first name: ");
         lName.setFieldValue("Enter last name: ");
         email.setFieldValue("Enter email address: ");
@@ -164,6 +168,7 @@ public class Bank {
 
         return fields;
     }
+
 
     /** Create a new credit account. Utilizes the createNewAccount() method.
      *

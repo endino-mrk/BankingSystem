@@ -145,18 +145,20 @@ public class Field<T, E> {
     }
 
     /**
-     * A comparator class tso compare if some string value's length is longer than
-     * some threshold.
+     * A comparator class tso compare if some string value's length is equal as some threshold.
      * Used for validation purposes.
      */
     public static class StringFieldLengthValidator implements FieldValidator<String, Integer> {
 
         @Override
         public String validate(String value, Integer threshold) {
-            if(value.length() < threshold) {
-                return "Field must have at least " + threshold + " characters";
+            if(value.length() != threshold) {
+                return "Field must have exactly " + threshold + " characters";
             }
             return null;
         }
+
+
+
     }
 }

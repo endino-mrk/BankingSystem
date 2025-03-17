@@ -1,4 +1,4 @@
-package accounts.transactions;
+package transactions;
 
 import accounts.Account;
 import accounts.IllegalAccountType;

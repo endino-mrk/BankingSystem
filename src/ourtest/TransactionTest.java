@@ -1,4 +1,8 @@
-package accounts;
+package ourtest;
+import accounts.Account;
+import accounts.CreditAccount;
+import accounts.IllegalAccountType;
+import accounts.SavingsAccount;
 import bank.Bank;
 import org.junit.Test;
 
@@ -8,8 +12,6 @@ public class TransactionTest {
 
     Bank b = new Bank(123, "MyBank", "123mybank");
     SavingsAccount acc1 = new SavingsAccount(b, "01234565789", "Michaela", "Endino", "mrk@mail.com", "mrk@mail.com", 500);
-//    addNewAccount()
-
 
     @Test
     public void TestDeposit() {

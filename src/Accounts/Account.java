@@ -4,7 +4,7 @@ import bank.Bank;
 
 import java.util.ArrayList;
 
-import accounts.transactions.Transaction;
+import transactions.Transaction;
 
 /**
  * An abstract account class that has comparators to compare itself with different account objects.

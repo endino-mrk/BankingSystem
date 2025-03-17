@@ -1,4 +1,4 @@
-package accounts.transactions;
+package transactions;
 
 /**
  * Class containing Transaction enums.

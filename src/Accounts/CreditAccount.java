@@ -1,9 +1,9 @@
 package accounts;
 
-import accounts.transactions.Compensable;
-import accounts.transactions.Payable;
-import accounts.transactions.TransactionService;
-import accounts.transactions.Transaction.Transactions;
+import transactions.Compensable;
+import transactions.Payable;
+import transactions.TransactionService;
+import transactions.Transaction.Transactions;
 import bank.Bank;
 
 public class CreditAccount extends Account implements Payable, Compensable {
@@ -47,7 +47,7 @@ public class CreditAccount extends Account implements Payable, Compensable {
             throw new IllegalAccountType("Cannot pay to account.");
         }
 
-        if (TransactionService.pay(getBank(), this, (BalanceHolder) account, amount)) {
+        if (TransactionService.credit(getBank(), this, (BalanceHolder) account, amount)) {
             addNewTransaction(getAccountNumber(), Transactions.Payment, "Paid to account");
             return true;
         }

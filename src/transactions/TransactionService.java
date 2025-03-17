@@ -1,4 +1,4 @@
-package accounts.transactions;
+package transactions;
 import accounts.BalanceHolder;
 import bank.Bank;
 import launcher.BankLauncher;
@@ -81,8 +81,11 @@ public class TransactionService {
      * @throws ILlegalAccountType when recipient account is not a BalanceHolder account. 
      * @return
      */
+
+//    String recipientAccNum
     public static boolean transfer(Bank sourceBank, Transferrable source, Account recipient, double amount) throws IllegalAccountType{
 
+        // fetch recipient from database
         if (!(recipient instanceof BalanceHolder)) {
             throw new IllegalAccountType("Recipient account cannot receive fund transfers.");
         }
@@ -91,6 +94,7 @@ public class TransactionService {
             if(hasEnoughBalance(source, amount)) {
                 // Subtracts amount from source account balance
                 adjustAccountBalance(source, -amount);
+                // update balance on database
                 
                 // If transferring to another bank, adjusts amount so processing fee is not accounted for in the fund transfer amount
                 if (!(Bank.accountExists(sourceBank, recipient.getAccountNumber()))) {
@@ -98,7 +102,8 @@ public class TransactionService {
                 }
     
                 // Adds amount to recipient account balance
-                adjustAccountBalance((BalanceHolder) recipient, amount); 
+                adjustAccountBalance((BalanceHolder) recipient, amount);
+                // update balance on database
                 System.out.printf("Successfully transferred %.2f from this account to account with account number %s", amount, recipient.getAccountNumber());
                 return true;
             } 
@@ -133,7 +138,7 @@ public class TransactionService {
         }
     }
 
-    public static boolean pay(Bank sourceBank, Payable source, BalanceHolder recipient, double amount) {
+    public static boolean credit(Bank sourceBank, Payable source, BalanceHolder recipient, double amount) {
         if (canCredit(sourceBank, source, amount)) {
             adjustLoanAmount(source, amount);
             adjustAccountBalance(recipient, amount);

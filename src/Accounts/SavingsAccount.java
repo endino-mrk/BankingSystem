@@ -1,11 +1,11 @@
 package accounts;
 
-import accounts.transactions.Depositable;
-import accounts.transactions.Transferrable;
-import accounts.transactions.Withdrawable;
-import accounts.transactions.Transaction.Transactions;
+import transactions.Depositable;
+import transactions.Transferrable;
+import transactions.Withdrawable;
+import transactions.Transaction.Transactions;
 import bank.Bank;
-import accounts.transactions.TransactionService;
+import transactions.TransactionService;
 
 
 public class SavingsAccount extends Account implements Withdrawable, Depositable, Transferrable {
