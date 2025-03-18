@@ -4,11 +4,19 @@ import java.sql.*;
 
 public class SQLiteInteraction {
     private static boolean verbose = false; // developer variable
+    private static boolean display = true; // developer variable, but toggleable
 
     private static Connection c = null; 
     private static Statement stmt = null;
     private static boolean initialized = false;
 
+
+    /**
+     * Toggles displaying of errors/exceptions whenever it occurs. Defaults to true.
+     */
+    public static void toggleDisplayError() {
+        display = !display;
+    }
 
     /**
      * Starts the specified SQLite database.
@@ -31,6 +39,8 @@ public class SQLiteInteraction {
             stmt = c.createStatement();
             initialized = true;
         } catch (SQLException sqle) {
+            if (!display) { return; }
+
             if (verbose) {
                 System.err.print("Error occurred while attempting to initialize SQL database: ");
                 sqle.printStackTrace();
@@ -60,6 +70,13 @@ public class SQLiteInteraction {
     public static void open() { start("master.db"); }
 
 
+    /**
+     * Returns a value that determines if the database has been started or not.
+     * 
+     * @return Flag if database has been started/initialized.
+     */
+    public static boolean isStarted() { return initialized; }
+
 
     /**
      * Stops the SQLite database.
@@ -78,6 +95,8 @@ public class SQLiteInteraction {
             c = null;
             initialized = false;
         } catch (SQLException sqle) {
+            if (!display) { return; }
+
             if (verbose) {
                 System.err.print("Error occurred while attempting to close SQL database: ");
                 sqle.printStackTrace();
@@ -109,6 +128,8 @@ public class SQLiteInteraction {
             stmt.executeUpdate(sqlcommand);
             return true;
         } catch (SQLException sqle) {
+            if (!display) { return false; }
+
             if (verbose) {
                 System.err.print("Error occurred while executing SQL command: ");
                 sqle.printStackTrace();
@@ -134,6 +155,8 @@ public class SQLiteInteraction {
         try {
             return stmt.executeQuery(sqlquery);
         } catch (SQLException sqle) {
+            if (!display) { return null; }
+
             if (verbose) {
                 System.err.print("Error occurred while executing SQL query: ");
                 sqle.printStackTrace();

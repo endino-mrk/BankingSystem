@@ -1,6 +1,8 @@
 package main;
 
 import launcher.BankLauncher;
+import sqlite.SQLiteBank;
+import sqlite.SQLiteInteraction;
 
 import java.util.Scanner;
 
@@ -21,6 +23,10 @@ public class Main
 
     public static void main(String[] args)
     {
+        SQLiteInteraction.start();
+        SQLiteBank.createTable();
+        BankLauncher.retrieveFromSQL();
+
         while (true)
         {
             showMenuHeader("Main Menu");
@@ -89,6 +95,8 @@ public class Main
                 System.out.println("Invalid option!");
             }
         }
+
+        SQLiteInteraction.stop();
     }
 
     /**

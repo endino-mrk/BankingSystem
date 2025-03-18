@@ -6,6 +6,7 @@ import accounts.SavingsAccount;
 import main.Field;
 import bank.Bank;
 import main.Main;
+import sqlite.SQLiteBank;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -26,6 +27,13 @@ public class BankLauncher {
     }
 
     /**
+     * Retrieves all banks from the SQL. Should only be used once to avoid duplication.
+     */
+    public static void retrieveFromSQL() {
+        Banks.addAll(SQLiteBank.retrieveBanks());
+    }
+
+    /**
      * Bank interaction interface.
      */
     public static void bankInit(){
@@ -34,8 +42,7 @@ public class BankLauncher {
             return;
         }
 
-        quack:
-        while (true) {
+        while (loggedBank != null) {
             Main.showMenuHeader("Bank Menu");
             Main.showMenu(31);
             String opt = Main.prompt("\nSelect an option: ", true);
@@ -49,7 +56,6 @@ public class BankLauncher {
                     break;
                 case "3":
                     logout();
-                    break quack;
                 default:
                     System.out.println("Input error: Invalid input. \n");
             }
@@ -259,6 +265,7 @@ public class BankLauncher {
      */
     private static void addBank(Bank b) {
         Banks.add(b);
+        SQLiteBank.insertToSQL(b);
     }
 
     /**

@@ -81,6 +81,10 @@ public class Bank {
         return this.ID;
     }
 
+    public String getSecret() {
+        return this.passcode;
+    }
+
     public double getDepositLimit() {
         return depositLimit;
     }
