@@ -5,7 +5,10 @@ import java.sql.*;
 public class DBConnection {
     public static Connection sqliteConnection;
 
-    // connect with database on instantiation
+    /**
+     * Creates a new database connection instance.
+     * @throws SQLException if a database access error occurs.
+     */
     public DBConnection() throws SQLException {
         String url = "jdbc:sqlite:master.db";
         sqliteConnection = DriverManager.getConnection(url);
@@ -13,8 +16,11 @@ public class DBConnection {
 
     /**
      * Runs a given SQL query string.
+     * - If the query is a `SELECT` statement, it returns a `ResultSet`.
+     * - For other queries (`INSERT`, `UPDATE`, `DELETE`), it executes the update.
+     *
      * @param query The SQL query to be executed.
-     * @return ResultSet of the executed query
+     * @return ResultSet of the executed query if it's a `SELECT` query, otherwise null.
      */
     public static ResultSet runQuery(String query) {
         if (sqliteConnection != null) {
@@ -35,6 +41,9 @@ public class DBConnection {
         return null;
     }
 
+    /**
+     * Closes the current SQLite database connection.
+     */
     public static void closeConnection() {
         if (sqliteConnection != null) {
             try {

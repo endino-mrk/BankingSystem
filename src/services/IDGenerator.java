@@ -1,5 +1,9 @@
 package services;
 
+import bank.Bank;
+import database.sqlite.AccountDBManager;
+import database.sqlite.BankDBManager;
+
 import java.sql.SQLException;
 import java.util.Random;
 import java.time.LocalDate;
@@ -24,7 +28,7 @@ public class IDGenerator {
      * @param name The name of the user, from which the first letter is extracted.
      * @return A unique Bank ID as a String.
      */
-    public static String BankIDgenerator(String name) throws SQLException {
+    public static String BankIDgenerator(String name) {
         LocalDate today = LocalDate.now();
         LocalTime now = LocalTime.now();
         Random rand = new Random();
@@ -49,18 +53,23 @@ public class IDGenerator {
             String bankID = String.valueOf(year) + month + day + hour + minute + iniName + digits;
 
             // Checks if the ID already exist in the DB and if not it will regenerate
-            if (!bankExists(bankID)) {
+            if (!BankDBManager.bankExists(bankID)) {
                 return bankID;
             } return null;
         }
-
-
     }
 
-    private static boolean bankExists(String id) throws SQLException {
-        return BankRetriever.getBank(id) != null;
-    }
 
+    public static String AccountIDGenerator(Bank bank) {
+        String id = "";
+        do {
+            String bankIDPortion = bank.getID();
+            int randomDigits = new Random().nextInt(1000000);
+            id = bankIDPortion + randomDigits;
+        } while (AccountDBManager.accountExists(id));
+
+        return id;
+    }
 
     /**
      * Generates a unique reference number based on the current date, time, and a random four-digit number.

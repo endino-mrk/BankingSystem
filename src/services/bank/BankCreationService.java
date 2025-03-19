@@ -6,8 +6,6 @@ import main.Field;
 import main.Main;
 import services.IDGenerator;
 
-import java.sql.SQLException;
-
 /**
  * Class responsible for creating banks.
  */
@@ -18,7 +16,7 @@ public class BankCreationService {
      *      NumberFormatException – May happen when inputting deposit, withdraw, and credit limit,
      *      and processing fee.
      */
-    public static void createNewBank() throws SQLException {
+    public static void createNewBank() {
 
         Main.showMenuHeader("Creating a New Bank");
 
@@ -64,5 +62,6 @@ public class BankCreationService {
             System.out.println("\nError: Invalid number format for deposit limit, withdraw limit, credit limit, or processing fee.");
         }
     }
+
 
 }

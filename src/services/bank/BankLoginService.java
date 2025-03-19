@@ -3,9 +3,10 @@ package services.bank;
 import bank.Bank;
 
 public class BankLoginService {
-    private static Bank loggedBank = null;
+    private Bank loggedBank = null;
 
-    public static Bank getLoggedBank() {
+    public BankLoginService() {};
+    public Bank getLoggedBank() {
         return loggedBank;
     }
 
@@ -13,7 +14,7 @@ public class BankLoginService {
      * Checks if a bank account is currently logged in.
      * @return `true` if a bank account is logged in, otherwise `false`.
      */
-    public static boolean isLogged() {
+    public boolean isLogged() {
         return loggedBank != null;
     }
 
@@ -22,7 +23,7 @@ public class BankLoginService {
      * field.
      * @param b : Bank user that successfully logged in.
      */
-    public static void setLogSession(Bank bank) {
+    public void setLogSession(Bank bank) {
         if (loggedBank == null) {
             loggedBank = bank;
             System.out.printf("\nBank '%s' successfully logged in! \n", bank.getName());
@@ -32,7 +33,7 @@ public class BankLoginService {
     /**
      * Destroys the login session for the current user.
      */
-    public static void logout() {
+    public void logout() {
         System.out.printf("\n%s logged out.\n", loggedBank.getName());
         loggedBank = null;
     }
