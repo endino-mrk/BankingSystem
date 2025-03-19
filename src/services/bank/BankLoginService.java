@@ -3,8 +3,39 @@ package services.bank;
 import bank.Bank;
 
 public class BankLoginService {
-    private Bank loggedBank;
-    public BankLoginService(Bank bank) {
-        loggedBank = bank;
+    private static Bank loggedBank = null;
+
+    public static Bank getLoggedBank() {
+        return loggedBank;
+    }
+
+    /**
+     * Checks if a bank account is currently logged in.
+     * @return `true` if a bank account is logged in, otherwise `false`.
+     */
+    public static boolean isLogged() {
+        return loggedBank != null;
+    }
+
+    /**
+     * Creates a new login session for the logged in bank user. Sets up a new value for the loggedBank
+     * field.
+     * @param b : Bank user that successfully logged in.
+     */
+    public static void setLogSession(Bank bank) {
+        if (loggedBank == null) {
+            loggedBank = bank;
+            System.out.printf("\nBank '%s' successfully logged in! \n", bank.getName());
+        }
+    }
+
+    /**
+     * Destroys the login session for the current user.
+     */
+    public static void logout() {
+        System.out.printf("\n%s logged out.\n", loggedBank.getName());
+        loggedBank = null;
     }
 }
+
+
