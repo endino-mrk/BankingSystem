@@ -3,37 +3,36 @@ package services.transaction;
 import account.Account;
 import account.BalanceHolder;
 import bank.Bank;
-import database.Repository;
+import database.sqlite.AccountDBManager;
+import database.sqlite.BankDBManager;
 import services.BalanceManager;
-
-import java.util.Map;
 
 /**
  * Handles deposit operation of balance
  */
 public class DepositService {
-    private Repository repository;
-
-    public DepositService(Repository repository) {
-        this.repository = repository;
-    }
-
-    public boolean deposit(Account account, double amount) {
+    public boolean cashDeposit(Account account, double amount) {
         // Amount must not go above bank deposit limit.
         if (!(account instanceof BalanceHolder)){
-            System.out.println("Account is not a balance holder");
+            System.out.println("Account cannot do deposits.");
             return false;
         }
 
-        if (amount <= account.getBank().getWithdrawLimit()) {
+        if (canDeposit(account, amount)) {
             BalanceManager.adjustAccountBalance((BalanceHolder) account, amount);
-
-            if (repository.update(account.getAccountNumber(), Map.of("balance", ((BalanceHolder) account).getBalance()))) {
-                System.out.printf("Successfully deposited %.2f to this account", amount);
-                return true;
+            AccountDBManager.updateAccountBalance((BalanceHolder) account);
+            System.out.println("Deposit successful!");
+            return true;
             }
-        }
-        // System.out.println("Unable to deposit, amount surpasses bank deposit limit.");
         return false;
+    }
+
+    private static boolean canDeposit(Account account, double amount) {
+        Bank bank = BankDBManager.fetchBank(account.getBankID());
+        if (amount > bank.getDepositLimit()) {
+            System.out.printf("Amount to deposit must not go above %.2f.", bank.getDepositLimit());
+            return false;
+        }
+        return true;
     }
 }

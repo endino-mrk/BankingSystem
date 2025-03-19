@@ -5,14 +5,6 @@ import account.BalanceHolder;
  * Manages balance amount
  */
 public class BalanceManager {
-    private BalanceHolder account;
-    private double amount;
-
-    public BalanceManager(BalanceHolder account, double amount){
-        this.account = account;
-        this.amount = amount;
-    }
-
     /**
      * Validates whether this savings account has enough balance to proceed with such a transaction based on the amount that is to be adjusted.
      * @param account The account being referenced
