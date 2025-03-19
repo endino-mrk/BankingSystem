@@ -1,26 +1,20 @@
-package accounts;
+package account;
 
 import bank.Bank;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
-import transactions.Transaction;
+import services.transaction.Transaction;
 
 /**
  * An abstract account class that has comparators to compare itself with different account objects.
  */
 public abstract class Account {
-    // class attributes, create docstring for each
-
-    private final Bank Bank;
-
+    private final String bankID;
     private final String accountNumber;
-
     private final String ownerFName, ownerLName, ownerEmail;
-
     private String pin;
-
-    private final ArrayList<Transaction> Transactions;
+    private final HashMap<String, Transaction.Transactions> Transactions;
 
     /**
      *
@@ -31,17 +25,15 @@ public abstract class Account {
      * @param owneremail
      * @param pin
      */
-    public Account(Bank bank, String accountnumber, String ownerfname, String ownerlname, String owneremail, String pin) {
-        this.Bank = bank;
+    public Account(String bankID, String accountnumber, String ownerfname, String ownerlname, String owneremail, String pin) {
+        this.bankID = bankID;
         this.accountNumber = accountnumber;
         this.ownerFName = ownerfname;
         this.ownerLName = ownerlname;
         this.ownerEmail = owneremail;
         this.pin = pin;
-        this.Transactions = new ArrayList<>();
+        this.Transactions = new HashMap<>();
     }
-
-    // CLASS METHODS HERE W/ PROPER AND COMPLETE DOC STRINGS
 
     public String getAccountNumber() {
         return accountNumber;
@@ -60,18 +52,22 @@ public abstract class Account {
     }
 
     public String getOwnerFullName() {
-        return ownerFName + ownerLName;
+        return ownerFName + " " + ownerLName;
     }
 
-    public Bank getBank() {
-        return Bank;
+    public String getBankID() {
+        return bankID;
     }
 
-    public void addNewTransaction(String accountNum, Transaction.Transactions type, String description) {
-
+    public String getPin() {
+        return pin;
     }
 
-    public String getTransactionsInfo() {
-        return "";
+    public String toString() {
+        return String.format("%s - %s", accountNumber, getOwnerFullName());
+    }
+
+    public String csvString() {
+        return "('" + this.bankID + "', '" + this.accountNumber + "', '" + this.getOwnerFullName() + "', '" + this.ownerEmail + "', '" + this.pin + "')";
     }
 }

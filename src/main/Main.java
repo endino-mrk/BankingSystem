@@ -1,7 +1,9 @@
 package main;
 
+import database.sqlite.DBConnection;
 import launcher.BankLauncher;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main
@@ -21,6 +23,14 @@ public class Main
 
     public static void main(String[] args)
     {
+        // Opens a connection to the database.
+        try {
+            new DBConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return;
+        }
+
         while (true)
         {
             showMenuHeader("Main Menu");

@@ -1,6 +1,6 @@
 package launcher;
 
-import accounts.Account;
+import account.Account;
 import bank.Bank;
 
 public class AccountLauncher {

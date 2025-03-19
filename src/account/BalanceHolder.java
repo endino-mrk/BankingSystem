@@ -1,4 +1,4 @@
-package accounts;
+package account;
 
 public interface BalanceHolder {
     public void setBalance(double amount);

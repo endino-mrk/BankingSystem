@@ -1,4 +1,4 @@
-package accounts;
+package account;
 
 /**
  * Interface for accounts that can hold loans.

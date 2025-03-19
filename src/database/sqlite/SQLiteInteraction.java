@@ -1,4 +1,4 @@
-package sqlite;
+package database.sqlite;
 
 import java.sql.*;
 
@@ -22,9 +22,9 @@ public class SQLiteInteraction {
         }
 
         try {
-            Class.forName("org.sqlite.JDBC");
+            Class.forName("org.database.sqlite.JDBC");
 
-            String url = "jdbc:sqlite:" + dbname;
+            String url = "jdbc:database.sqlite:" + dbname;
             c = DriverManager.getConnection(url);
             c.setAutoCommit(true);
 
@@ -38,7 +38,7 @@ public class SQLiteInteraction {
                 System.err.println("Error occurred while attempting to initialize SQL database: " + sqle);
             }
         } catch (ClassNotFoundException cnf) {
-            System.err.println("unless if the sqlite-jdbc jar file was erased or was somehow not included as an (implicit) import, this is not supposed to trigger at all.");
+            System.err.println("unless if the database.sqlite-jdbc jar file was erased or was somehow not included as an (implicit) import, this is not supposed to trigger at all.");
         }
     }
 

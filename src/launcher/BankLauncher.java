@@ -1,8 +1,8 @@
 package launcher;
 
 // import bank.*;
-import accounts.Account;
-import accounts.SavingsAccount;
+import account.Account;
+import account.SavingsAccount;
 import main.Field;
 import bank.Bank;
 import main.Main;
@@ -72,7 +72,7 @@ public class BankLauncher {
                 // Show All Credit Accounts
                 case "1":
                     Main.showMenuHeader("All Credit Accounts");
-                    loggedBank.showAccounts(accounts.CreditAccount.class);
+                    loggedBank.showAccounts(account.CreditAccount.class);
                     break;
 
                     // Show All Savings Accounts
@@ -105,7 +105,7 @@ public class BankLauncher {
         Main.showMenu(33);
         String opt = Main.prompt("\nSelect an option: ", true);
 
-        accounts.Account a = null;
+        account.Account a = null;
 
         switch (opt) {
             case "1":
@@ -297,14 +297,14 @@ public class BankLauncher {
      * @return the matching account if found, otherwise null
      */
 
-    public static Account findAccount(String accountNumber) {
-        for (Bank b : Banks) {
-            if (Bank.accountExists(b, accountNumber)) {
-                return loggedBank.getBankAccount(b, accountNumber);
-            }
-        }
-        return null;
-    }
+//    public static Account findAccount(String accountNumber) {
+//        for (Bank b : Banks) {
+//            if (Bank.accountExists(b, accountNumber)) {
+//                return loggedBank.getBankAccount(b, accountNumber);
+//            }
+//        }
+//        return null;
+//    }
 
     /**
      * Returns the total number of registered banks
