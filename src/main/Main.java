@@ -1,7 +1,13 @@
 package main;
 
+import account.Account;
+import database.sqlite.AccountDBManager;
+import database.sqlite.BankDBManager;
 import database.sqlite.DBConnection;
+import launcher.AccountLauncher;
 import launcher.BankLauncher;
+import services.bank.BankCreationService;
+import services.bank.BankDisplayerService;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -26,7 +32,9 @@ public class Main
         // Opens a connection to the database.
         try {
             new DBConnection();
-        } catch (SQLException e) {
+            BankDBManager.createTable();
+            AccountDBManager.createTable();
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             return;
         }
@@ -46,7 +54,12 @@ public class Main
                 showMenu(2, 1);
                 setOption();
                 showMenu(getOption(), 1);
-                // TODO: Complete this portion
+
+//                AccountLauncher.accountLogin();
+//                if (AccountLauncher.getLogSession().isLoggedIn()) {
+                    // polymorphic call of init method to whatever type the logged account is
+//                  AccountLauncher.getLogSession().getLoggedAccount().init();
+//                }
             }
             // Bank Option
             else if (getOption() == 2)
@@ -59,16 +72,16 @@ public class Main
                     // Login
                     if (getOption() == 1) {
                         while (true) {
-                            if (BankLauncher.bankSize() == 0) {
+                            if (BankDBManager.getBanks() == null) {
                                 System.out.println("\nThere no currently registered banks in the system!");
                                 break;
                             }
 
                             // Displays all registered bank names
-                            BankLauncher.showBanksMenu();
+                            BankDisplayerService.showBanks();
                             BankLauncher.bankLogin();
 
-                            if (!BankLauncher.isLogged()) {
+                            if (!BankLauncher.getLogSession().isLogged()) {
                                 break;
                             }
 
@@ -87,7 +100,7 @@ public class Main
             // Create New Bank
             else if (getOption() == 3)
             {
-                BankLauncher.createNewBank();
+                BankCreationService.createNewBank();
             }
             else if (getOption() == 4)
             {

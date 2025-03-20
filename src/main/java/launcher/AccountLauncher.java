@@ -1,20 +1,23 @@
 package launcher;
 
 import account.Account;
-import account.CreditAccount;
-import account.SavingsAccount;
-import bank.Bank;
 import database.sqlite.BankDBManager;
 import main.Main;
 import services.account.AccountLoginService;
 import services.bank.BankDisplayerService;
 
 public class AccountLauncher {
-    private static AccountLoginService logSession = new AccountLoginService();
+    protected static AccountLoginService logSession = new AccountLoginService();
 
     // CLASS METHODS HERE W/ PROPER AND COMPLETE DOC STRINGS
 
+
+    public static AccountLoginService getLogSession() {
+        return logSession;
+    }
+
     public static void accountInit(){
+        // menu "LOGGING TO AN ACCOUNT"
         if (!logSession.isLoggedIn()){
             System.out.println("No account is logged in");
             return;
@@ -43,6 +46,7 @@ public class AccountLauncher {
             if (BankDBManager.bankExists(bankID)) break;
             System.out.println("Bank Unavailable. There is no bank with corresponding bank ID registered in the system.");
         }
+
 
         String accountNum = Main.prompt("Enter Account Number: ", true);
         String passcode = Main.prompt("Enter Passcode: ", true);

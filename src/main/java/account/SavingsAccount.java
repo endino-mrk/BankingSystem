@@ -26,12 +26,12 @@ public class SavingsAccount extends Account implements BalanceHolder {
 //        return "";
 //    }
 
-    public String csvString() {
-        return "(" + this.balance + ")";
-    }
+//    public String csvString() {
+//        return super.csvString() + this.balance + ")";
+//    }
 
     @Override
     public void init() {
-        SavingsAccountLauncher.savingsAccountInit();
+//        SavingsAccountLauncher.savingsAccountInit();
     }
 }

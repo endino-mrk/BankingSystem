@@ -9,7 +9,8 @@ public class DBConnection {
      * Creates a new database connection instance.
      * @throws SQLException if a database access error occurs.
      */
-    public DBConnection() throws SQLException {
+    public DBConnection() throws SQLException, ClassNotFoundException {
+        Class.forName("org.sqlite.JDBC");
         String url = "jdbc:sqlite:master.db";
         sqliteConnection = DriverManager.getConnection(url);
     }

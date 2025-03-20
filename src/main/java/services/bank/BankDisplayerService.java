@@ -49,7 +49,7 @@ public class BankDisplayerService {
                         System.out.println(entry.getKey() + " - " + entry.getValue());
                     }
                 } else {
-                    System.out.println("There are no currently reigstered credit accounts in this bank.");
+                    System.out.println("There are currently no reigstered credit accounts in this bank.");
                 }
                 break;
             }
@@ -62,7 +62,7 @@ public class BankDisplayerService {
                         System.out.println(entry.getKey() + " - " + entry.getValue());
                     }
                 } else {
-                    System.out.println("There are no currently reigstered savings accounts in this bank.");
+                    System.out.println("There are currently no reigstered savings accounts in this bank.");
                 }
                 break;
             }
@@ -75,7 +75,7 @@ public class BankDisplayerService {
                         System.out.println(entry.getKey() + " - " + entry.getValue());
                     }
                 } else {
-                    System.out.println("There are no currently accounts in this bank.");
+                    System.out.println("There are currently no accounts in this bank.");
                 }
                 break;
             }

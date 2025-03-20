@@ -30,9 +30,9 @@ public class AccountDBManager {
     private static void createSavingsAccTable() {
         String query = "CREATE TABLE IF NOT EXISTS savings_accounts (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "account_id TEXT NOT NULL," +
+                "account_id TEXT NOT NULL UNIQUE," +
                 "balance REAL NOT NULL," +
-                "FOREIGN KEY (account_id) REFERENCES accounts (account_id);";
+                "FOREIGN KEY (account_id) REFERENCES accounts (account_id));";
         DBConnection.runQuery(query);
     }
 
@@ -42,9 +42,9 @@ public class AccountDBManager {
     private static void createCreditAccTable() {
         String query = "CREATE TABLE IF NOT EXISTS credit_accounts (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "account_id TEXT NOT NULL," +
+                "account_id TEXT NOT NULL UNIQUE," +
                 "loan REAL NOT NULL," +
-                "FOREIGN KEY (account_id) REFERENCES accounts (account_id);";
+                "FOREIGN KEY (account_id) REFERENCES accounts (account_id));";
         DBConnection.runQuery(query);
     }
 
@@ -53,14 +53,16 @@ public class AccountDBManager {
      * @param account The account object to add.
      */
     public static void addAccount(Account account) {
-        String values = account.csvString();
-        String query = "INSERT INTO accounts (account_id, bank_id, first_name, last_name, email, pin) VALUES " + values + ";";
-        DBConnection.runQuery(query);
+        if (!accountExists(account.getAccountNumber())) {
+            String values = account.csvString();
+            String query = "INSERT INTO accounts (account_id, bank_id, first_name, last_name, email, pin) VALUES " + values + ";";
+            DBConnection.runQuery(query);
 
-        if (account instanceof SavingsAccount) {
-            addSavingsAccount((SavingsAccount) account);
-        } else if (account instanceof CreditAccount) {
-            addCreditAccount((CreditAccount) account);
+            if (account instanceof SavingsAccount) {
+                addSavingsAccount((SavingsAccount) account);
+            } else if (account instanceof CreditAccount) {
+                addCreditAccount((CreditAccount) account);
+            }
         }
     }
 
@@ -69,9 +71,12 @@ public class AccountDBManager {
      * @param account The savings account object to add.
      */
     private static void addSavingsAccount(SavingsAccount account) {
-        String values = account.csvString();
-        String query = "INSERT INTO savings_accounts (account_id, balance) VALUES " + values + ";";
-        DBConnection.runQuery(query);
+//        String values = account.csvString();
+        if (!existsInSavings(account.getAccountNumber())) {
+            String values = String.format("('%s', %f)", account.getAccountNumber(), account.getBalance());
+            String query = "INSERT INTO savings_accounts (account_id, balance) VALUES " + values + ";";
+            DBConnection.runQuery(query);
+        }
     }
 
     /**
@@ -79,9 +84,13 @@ public class AccountDBManager {
      * @param account The credit account object to add.
      */
     private static void addCreditAccount(CreditAccount account) {
-        String values = account.csvString();
-        String query = "INSERT INTO credit_accounts (account_id, loan) VALUES " + values + ";";
-        DBConnection.runQuery(query);
+//        String values = account.csvString();
+        if (!existsInCredit(account.getAccountNumber())) {
+            String values = String.format("('%s', %f)", account.getAccountNumber(), account.getLoan());
+            String query = "INSERT INTO credit_accounts (account_id, loan) VALUES " + values + ";";
+            DBConnection.runQuery(query);
+        }
+
     }
 
     /**
@@ -121,7 +130,7 @@ public class AccountDBManager {
      * @return True if the account exists, false otherwise.
      */
     public static boolean accountExists(String accountID) {
-        String query = "SELECT account_id FROM accounts WHERE account_id = " + accountID + ";";
+        String query = "SELECT account_id FROM accounts WHERE account_id = '" + accountID + "';";
         return exists(query);
     }
 
@@ -131,7 +140,7 @@ public class AccountDBManager {
      * @return True if it exists in savings, false otherwise.
      */
     public static boolean existsInSavings(String accountID) {
-        String query = "SELECT account_id FROM savings_accounts WHERE account_id = " + accountID + ";";
+        String query = "SELECT account_id FROM savings_accounts WHERE account_id = '" + accountID + "';";
         return exists(query);
     }
 
@@ -141,7 +150,7 @@ public class AccountDBManager {
      * @return True if it exists in credit, false otherwise.
      */
     public static boolean existsInCredit(String accountID) {
-        String query = "SELECT account_id FROM credit_accounts WHERE account_id = " + accountID + ";";
+        String query = "SELECT account_id FROM credit_accounts WHERE account_id = '" + accountID + "';";
         return exists(query);
     }
 
@@ -152,7 +161,7 @@ public class AccountDBManager {
      * @return True if the account exists in the bank, false otherwise.
      */
     public static boolean existsInBank(String bankID, String accountID) {
-        String query = "SELECT * FROM accounts WHERE bank_id = " + bankID + "AND account_id = " + accountID;
+        String query = "SELECT * FROM accounts WHERE bank_id = '" + bankID + "' AND account_id = '" + accountID + "';";
         return exists(query);
     }
 
@@ -161,8 +170,8 @@ public class AccountDBManager {
      * @return The CreditAccount object or null if not found.
      */
     private static Account fetchCredit() {
-        String query = "SELECT accounts.*, loan" +
-                "FROM accounts" +
+        String query = "SELECT accounts.*, loan " +
+                "FROM accounts " +
                 "INNER JOIN credit_accounts ON credit_accounts.account_id = accounts.account_id;";
         ResultSet account = DBConnection.runQuery(query);
         try {
@@ -180,8 +189,8 @@ public class AccountDBManager {
      * @return The SavingsAccount object or null if not found.
      */
     private static Account fetchSavings() {
-        String query = "SELECT accounts.*, loan" +
-                "FROM accounts" +
+        String query = "SELECT accounts.*, loan " +
+                "FROM accounts " +
                 "INNER JOIN savings_accounts ON savings_accounts.account_id = accounts.account_id;";
         ResultSet account = DBConnection.runQuery(query);
         try {
@@ -197,9 +206,9 @@ public class AccountDBManager {
      * @param account The BalanceHolder account to update.
      */
     public static void updateAccountBalance(BalanceHolder account) {
-        String query = "UPDATE savings_account" +
-                "SET balance = " + account.getBalance() +
-                "WHERE account_id = " + ((Account) account).getAccountNumber();
+        String query = "UPDATE savings_account " +
+                "SET balance = " + account.getBalance() + " " +
+                "WHERE account_id = '" + ((Account) account).getAccountNumber() + "';";
         DBConnection.runQuery(query);
     }
 
@@ -208,9 +217,9 @@ public class AccountDBManager {
      * @param account The LoanHolder account to update.
      */
     public static void updateAccountLoan(LoanHolder account) {
-        String query = "UPDATE credit_accounts" +
-                "SET loan = " + account.getLoan() +
-                "WHERE account_id = " + ((Account) account).getAccountNumber();
+        String query = "UPDATE credit_accounts " +
+                "SET loan = " + account.getLoan() + " " +
+                "WHERE account_id = '" + ((Account) account).getAccountNumber() + "';";
         DBConnection.runQuery(query);
     }
 }

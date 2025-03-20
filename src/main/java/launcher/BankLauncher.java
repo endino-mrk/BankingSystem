@@ -10,6 +10,10 @@ import services.bank.BankLoginService;
 public class BankLauncher {
     private static BankLoginService logSession = new BankLoginService();
 
+    public static BankLoginService getLogSession() {
+        return logSession;
+    }
+
     /**
      * Bank interaction interface.
      */

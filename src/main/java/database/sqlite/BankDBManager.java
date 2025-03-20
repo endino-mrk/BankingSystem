@@ -27,8 +27,10 @@ public class BankDBManager {
      * @param bank The Bank object to add.
      */
     public static void addBank(Bank bank) {
-        String values = bank.csvString();
-        DBConnection.runQuery("INSERT INTO Banks (bank_id, name, passcode, depositLimit, creditLimit, withdrawLimit, processingFee) VALUES " + values + ";");
+        if (!bankExists(bank.getID())) {
+            String values = bank.csvString();
+            DBConnection.runQuery("INSERT INTO Banks (bank_id, name, passcode, depositLimit, creditLimit, withdrawLimit, processingFee) VALUES " + values + ";");
+        }
     }
 
     /**
@@ -85,7 +87,7 @@ public class BankDBManager {
      * @return True if the bank exists, false otherwise.
      */
     public static boolean bankExists(String bankID) {
-        String query = "SELECT bank_id FROM banks WHERE bank_id = " + bankID + ";";
+        String query = "SELECT bank_id FROM banks WHERE bank_id = '" + bankID + "';";
         ResultSet account = DBConnection.runQuery(query);
         try {
             return account.next(); // returns true if bank exists
@@ -101,7 +103,7 @@ public class BankDBManager {
      * @return A HashMap with account IDs as keys and full names as values.
      */
     public static HashMap<String, String> getAllAccounts(String bankID) {
-        String query = "SELECT account_id, first_name, last_name FROM accounts WHERE bank_id = " + bankID + ";";
+        String query = "SELECT account_id, first_name, last_name FROM accounts WHERE bank_id = '" + bankID + "';";
         ResultSet accounts = DBConnection.runQuery(query);
         return extractAccountDetails(accounts);
     }
@@ -112,9 +114,9 @@ public class BankDBManager {
      * @return A HashMap with account IDs as keys and full names as values.
      */
     public static HashMap<String, String> getCreditAccounts(String bankID) {
-        String query = "SELECT account_id, first_name, last_name FROM accounts" +
-                "INNER JOIN credit_accounts ON accounts.account_id = credit_accounts.account_id" +
-                "WHERE accounts.bank_id = " + bankID + ";";
+        String query = "SELECT accounts.account_id, first_name, last_name FROM accounts " +
+                "INNER JOIN credit_accounts ON accounts.account_id = credit_accounts.account_id " +
+                "WHERE accounts.bank_id = '" + bankID + "';";
         ResultSet creditAccounts = DBConnection.runQuery(query);
         return extractAccountDetails(creditAccounts);
     }
@@ -125,9 +127,9 @@ public class BankDBManager {
      * @return A HashMap with account IDs as keys and full names as values.
      */
     public static HashMap<String, String> getSavingsAccounts(String bankID) {
-        String query = "SELECT account_id, first_name, last_name FROM accounts" +
-                "INNER JOIN savings_account ON accounts.account_id = savings_account.account_id" +
-                "WHERE accounts.bank_id = " + bankID + ";";
+        String query = "SELECT accounts.account_id, first_name, last_name FROM accounts " +
+                "INNER JOIN savings_accounts ON accounts.account_id = savings_accounts.account_id " +
+                "WHERE accounts.bank_id = '" + bankID + "';";
         ResultSet savingsAccounts = DBConnection.runQuery(query);
         return extractAccountDetails(savingsAccounts);
      }

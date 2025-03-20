@@ -23,12 +23,12 @@ public class CreditAccount extends Account implements LoanHolder {
 //        return "";
 //    }
 
-    public String csvString() {
-        return "(" + this.loan + ")";
-    }
+//    public String csvString() {
+//        return super.csvString() + this.loan + ")";
+//    }
 
     @Override
     public void init() {
-        CreditAccountLauncher.creditAccountInit();
+//        CreditAccountLauncher.creditAccountInit();
     }
 }
