@@ -89,7 +89,7 @@ public class AccountDBManager {
      * @param accountID The ID of the account to fetch.
      * @return The account object if it exists, otherwise null.
      */
-    public Account fetchAccount(String accountID) {
+    public static Account fetchAccount(String accountID) {
         if (accountExists(accountID)) {
             if (existsInSavings(accountID)) {
                 return fetchSavings();

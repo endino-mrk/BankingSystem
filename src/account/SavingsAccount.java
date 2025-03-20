@@ -1,6 +1,7 @@
 package account;
 
 import bank.Bank;
+import launcher.SavingsAccountLauncher;
 
 public class SavingsAccount extends Account implements BalanceHolder {
     private double balance;
@@ -27,5 +28,10 @@ public class SavingsAccount extends Account implements BalanceHolder {
 
     public String csvString() {
         return "(" + this.balance + ")";
+    }
+
+    @Override
+    public void init() {
+        SavingsAccountLauncher.savingsAccountInit();
     }
 }

@@ -37,20 +37,20 @@ public class BankDBManager {
      * @return The Bank object, or null if not found.
      */
     public static Bank fetchBank(String bankID) {
-        String sqlQuery = "SELECT * FROM Banks WHERE bank_id = '" + bankID + "'";
-        ResultSet bank = DBConnection.runQuery(sqlQuery);
-        if (bank != null) {
+        if (bankExists(bankID)) {
+            String sqlQuery = "SELECT * FROM Banks WHERE bank_id = '" + bankID + "'";
+            ResultSet bank = DBConnection.runQuery(sqlQuery);
             try {
-                bank.next();
-
-                String id = bank.getString("bank_id");
-                String name = bank.getString("name");
-                String passcode = bank.getString("passcode");
-                double depositlimit = bank.getDouble("depositLimit");
-                double withdrawlimit = bank.getDouble("creditLimit");
-                double creditlimit = bank.getDouble("withdrawLimit");
-                double processingfee = bank.getDouble("processingFee");
-                return new Bank(id, name, passcode, depositlimit, withdrawlimit, creditlimit, processingfee);
+                while (bank.next()) {
+                    String id = bank.getString("bank_id");
+                    String name = bank.getString("name");
+                    String passcode = bank.getString("passcode");
+                    double depositlimit = bank.getDouble("depositLimit");
+                    double withdrawlimit = bank.getDouble("creditLimit");
+                    double creditlimit = bank.getDouble("withdrawLimit");
+                    double processingfee = bank.getDouble("processingFee");
+                    return new Bank(id, name, passcode, depositlimit, withdrawlimit, creditlimit, processingfee);
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }

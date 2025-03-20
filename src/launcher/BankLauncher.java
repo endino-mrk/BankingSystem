@@ -53,13 +53,13 @@ public class BankLauncher {
         }
 
         String bankID = Main.prompt("Enter ID: ", true);
-        String name = Main.prompt("Enter name: ", false);
+//        String name = Main.prompt("Enter name: ", false);
         String passcode = Main.prompt("Enter passcode: ", true);
 
         Bank bank = BankDBManager.fetchBank(bankID);
         if (bank != null && bank.getPasscode().equals(passcode)) {
             logSession.setLogSession(bank);
-            System.out.println("Logged in to " + name + " bank.");
+            System.out.println("Logged in to " + bank.getName() + " bank.");
         } else {
             System.out.println("Login failed. Invalid credentials.");
         }

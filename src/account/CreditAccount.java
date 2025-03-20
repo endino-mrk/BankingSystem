@@ -1,6 +1,7 @@
 package account;
 
 import bank.Bank;
+import launcher.CreditAccountLauncher;
 
 public class CreditAccount extends Account implements LoanHolder {
     private double loan;
@@ -26,4 +27,8 @@ public class CreditAccount extends Account implements LoanHolder {
         return "(" + this.loan + ")";
     }
 
+    @Override
+    public void init() {
+        CreditAccountLauncher.creditAccountInit();
+    }
 }

@@ -70,4 +70,6 @@ public abstract class Account {
     public String csvString() {
         return "('" + this.bankID + "', '" + this.accountNumber + "', '" + this.getOwnerFullName() + "', '" + this.ownerEmail + "', '" + this.pin + "')";
     }
+
+    public abstract void init();
 }
