@@ -23,12 +23,17 @@ public class BankCreationService {
         Field<String, String> bankName = new Field<>("bank name", String.class, "", new Field.StringFieldValidator());
         Field<String, Integer> bankPasscode = new Field<>("bank passcode", String.class, 8, new Field.StringFieldLengthValidator());
 
+        // Bank name field
         bankName.setFieldValue("Enter Bank Name: ", false);
+
+        // Randomized ID
+        String bankID = IDGenerator.BankIDgenerator(bankName.getFieldValue());
+        System.out.println("Generated Bank ID: " + bankID);
+
+        // Bank passcode field
         while (bankPasscode.getFieldValue() == null || bankPasscode.getFieldValue().length() != 8) {
             bankPasscode.setFieldValue("Enter Bank Passcode (must be exactly 8 digits): ");
         }
-
-        String bankID = IDGenerator.BankIDgenerator(bankName.getFieldValue());
 
         try {
             boolean validChoice = false;
