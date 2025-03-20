@@ -55,11 +55,11 @@ public class Main
                 setOption();
                 showMenu(getOption(), 1);
 
-//                AccountLauncher.accountLogin();
-//                if (AccountLauncher.getLogSession().isLoggedIn()) {
-                    // polymorphic call of init method to whatever type the logged account is
-//                  AccountLauncher.getLogSession().getLoggedAccount().init();
-//                }
+                AccountLauncher.accountLogin();
+                if (AccountLauncher.getLogSession().isLoggedIn()) {
+   //                  polymorphic call of init method to whatever type the logged account is;
+                  AccountLauncher.getLogSession().getLoggedAccount().init();
+                }
             }
             // Bank Option
             else if (getOption() == 2)
