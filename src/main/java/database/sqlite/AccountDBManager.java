@@ -1,9 +1,13 @@
 package database.sqlite;
 
 import account.*;
+import account.CreditAccount;
+import account.SavingsAccount;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import account.Account;
+import database.sqlite.DBConnection;
 
 public class AccountDBManager {
     /**
