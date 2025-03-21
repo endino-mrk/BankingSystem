@@ -13,6 +13,8 @@ public class DBConnection {
         Class.forName("org.sqlite.JDBC");
         String url = "jdbc:sqlite:master.db";
         sqliteConnection = DriverManager.getConnection(url);
+        Statement statement = sqliteConnection.createStatement();
+        statement.executeQuery("PRAGMA busy_timeout = 5000");
     }
 
     /**
@@ -32,6 +34,7 @@ public class DBConnection {
                     return statement.executeQuery(query);
                 } else {
                     statement.executeUpdate(query);
+
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

@@ -39,7 +39,7 @@ public class WithdrawService {
     }
 
     private static void generateTransaction(Account account, double amount) {
-        String description = String.format("-%.2f withdrawed from this account's balance.", amount);
+        String description = String.format("-%.2f withdrawed from this account''s balance.", amount);
         TransactionLogService.logTransaction(account, Transaction.Transactions.Withdraw, description);
     }
 }

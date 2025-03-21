@@ -81,11 +81,8 @@ public class CreditAccountLauncher extends AccountLauncher {
         Field<Double, Double> amount = new Field<>("amount", Double.class, 0.0, new Field.DoubleFieldValidator());
         amount.setFieldValue("Enter amount to recompense: ");
 
-        if (amount.getFieldValue() <= 0) {
-            return;
+        if (RecompenseService.recompense(account,amount.getFieldValue())) {
+            System.out.printf("Successfully recompensed %.2f.\n", amount.getFieldValue());
         }
-        RecompenseService.recompense(account,amount.getFieldValue());
-        System.out.printf("Successfully recompensed %.2f.\n", amount.getFieldValue());
-
     }
 }
