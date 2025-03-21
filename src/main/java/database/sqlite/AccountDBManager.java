@@ -6,8 +6,11 @@ import account.SavingsAccount;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import account.Account;
 import database.sqlite.DBConnection;
+import services.transaction.Transaction;
 
 public class AccountDBManager {
     /**
@@ -103,14 +106,25 @@ public class AccountDBManager {
      * @return The account object if it exists, otherwise null.
      */
     public static Account fetchAccount(String accountID) {
+        Account a = null;
         if (accountExists(accountID)) {
             if (existsInSavings(accountID)) {
-                return fetchSavings();
+                 a = fetchSavings();
             } else if (existsInCredit(accountID)) {
-                return fetchCredit();
+                a = fetchCredit();
+            } else {
+                return a;
+            }
+
+            // fetch transactions
+            ArrayList<Transaction> transactions = TransactionDBManager.getTransactions(accountID);
+            if (!transactions.isEmpty()) {
+                for (Transaction t: transactions) {
+                    a.getTransactions().add(t);
+                }
             }
         }
-        return null;
+        return a;
     }
 
     /**
@@ -181,6 +195,8 @@ public class AccountDBManager {
         try {
             Account a = new CreditAccount(account.getString("bank_id"), account.getString("account_id"), account.getString("first_name"), account.getString("last_name"), account.getString("email"), account.getString("pin"));
             ((CreditAccount) a).setLoan(account.getDouble("loan"));
+
+            // fetch transactions
             return a;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -198,7 +214,8 @@ public class AccountDBManager {
                 "INNER JOIN savings_accounts ON savings_accounts.account_id = accounts.account_id;";
         ResultSet account = DBConnection.runQuery(query);
         try {
-            return new SavingsAccount(account.getString("bank_id"), account.getString("account_id"), account.getString("first_name"), account.getString("last_name"), account.getString("email"), account.getString("pin"), account.getDouble("balance"));
+            Account a = new SavingsAccount(account.getString("bank_id"), account.getString("account_id"), account.getString("first_name"), account.getString("last_name"), account.getString("email"), account.getString("pin"), account.getDouble("balance"));
+            return a;
         } catch (SQLException e) {
             e.printStackTrace();
         }

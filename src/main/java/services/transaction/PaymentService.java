@@ -55,7 +55,7 @@ public class PaymentService {
     }
 
     private static void generateTransaction(Account source, Account recipient, double amount) {
-        String sourceDesc = String.format("-%.2f paid to %s with Acc. No. %s.", amount, recipient.getOwnerFullName(), recipient.getAccountNumber());
+        String sourceDesc = String.format("+%.2f paid to %s with Acc. No. %s.", amount, recipient.getOwnerFullName(), recipient.getAccountNumber());
         TransactionLogService.logTransaction(source, Transaction.Transactions.Payment, sourceDesc);
 
         // record transaction of recipient

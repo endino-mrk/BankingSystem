@@ -10,6 +10,7 @@ import org.junit.Test;
 import services.transaction.PaymentService;
 import services.transaction.RecompenseService;
 import services.transaction.Transaction;
+import services.transaction.TransferService;
 
 import java.sql.SQLException;
 
@@ -29,22 +30,33 @@ public class TestDB {
 
         Account savingsAccount = new SavingsAccount("202503201836B6485", "23456789", "Phil", "Collins", "phil@mail.com", "12345678", 500.0);
         AccountDBManager.addAccount(savingsAccount);
+        DBConnection.closeConnection();
     }
 
     @Test
     public void TestAddTransaction() throws SQLException, ClassNotFoundException {
         new DBConnection();
-        Bank bank = new Bank("202503201836B6485", "BDO", "12345678");
-        BankDBManager.addBank(bank);
+//        Bank bank = new Bank("202503201836B6485", "BDO", "12345678");
+//        BankDBManager.addBank(bank);
         Account credAccount = new CreditAccount("202503201836B6485", "23456789", "Phil", "Collins", "phil@mail.com", "12345678");
-        AccountDBManager.addAccount(credAccount);
+//        AccountDBManager.addAccount(credAccount);
         Account savingsAccount = new SavingsAccount("202503201836B6485", "12345678", "Phil", "Collins", "phil@mail.com", "12345678", 500.0);
-        AccountDBManager.addAccount(savingsAccount);
+//        AccountDBManager.addAccount(savingsAccount);
+        Account savingsAccount1 = new SavingsAccount("202503201836B6485", "87654321", "James", "Krivchenia", "phil@mail.com", "12345678", 500.0);
+//        AccountDBManager.addAccount(savingsAccount1);
+
 
         PaymentService.pay((LoanHolder) credAccount, (BalanceHolder) savingsAccount, 500.0);
         RecompenseService.recompense((LoanHolder) credAccount, 250);
+        TransferService.transfer((BalanceHolder) savingsAccount, (BalanceHolder) savingsAccount1, 1500);
 //        Transaction t = new Transaction("1107", Transaction.Transactions.Withdraw, "example transaction");
 //        TransactionDBManager.addTransaction(t);
+        DBConnection.closeConnection();
+    }
+
+    @Test
+    public void TestClose() {
+        DBConnection.closeConnection();
     }
 }
 

@@ -22,7 +22,7 @@ public class RecompenseService {
     }
 
     private static void generateTransaction(Account account, double amount) {
-        String description = String.format("-%.2f paid to this account's credit.", amount);
+        String description = String.format("-%.2f paid to the credit of this account.", amount);
         TransactionLogService.logTransaction(account, Transaction.Transactions.Recompense, description);
     }
 }
