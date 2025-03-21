@@ -11,7 +11,7 @@ import services.BalanceManager;
  * Handles deposit operation of balance
  */
 public class DepositService {
-    public boolean cashDeposit(Account account, double amount) {
+    public static boolean cashDeposit(Account account, double amount) {
         // Amount must not go above bank deposit limit.
         if (!(account instanceof BalanceHolder)){
             System.out.println("Account cannot do deposits.");

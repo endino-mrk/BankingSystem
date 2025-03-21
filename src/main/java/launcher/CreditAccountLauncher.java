@@ -78,7 +78,7 @@ public class CreditAccountLauncher extends AccountLauncher {
      * Method that is utilized to recompense payment transaction.
      */
     public static void recompense(CreditAccount account) {
-        Field<Double, Double> amount = new Field("amount", Double.class, 0.0, new Field.DoubleFieldValidator());
+        Field<Double, Double> amount = new Field<>("amount", Double.class, 0.0, new Field.DoubleFieldValidator());
         amount.setFieldValue("Enter amount to recompense: ");
 
         if (amount.getFieldValue() <= 0) {

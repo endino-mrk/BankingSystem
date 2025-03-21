@@ -13,7 +13,7 @@ import java.security.IdentityScope;
  * Handles withdrawal operation of balance
  */
 public class WithdrawService {
-    public boolean withdraw(BalanceHolder account, double amount) {
+    public static boolean withdraw(BalanceHolder account, double amount) {
         // Amount must not go above bank withdrawal limit
         if (canWithdraw((Account) account, amount)){
             if(BalanceManager.hasEnoughBalance(account, amount)) {
