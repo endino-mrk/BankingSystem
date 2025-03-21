@@ -4,6 +4,7 @@ import account.Account;
 import database.sqlite.AccountDBManager;
 import database.sqlite.BankDBManager;
 import database.sqlite.DBConnection;
+import database.sqlite.TransactionDBManager;
 import launcher.AccountLauncher;
 import launcher.BankLauncher;
 import services.bank.BankCreationService;
@@ -34,6 +35,7 @@ public class Main
             new DBConnection();
             BankDBManager.createTable();
             AccountDBManager.createTable();
+            TransactionDBManager.createTable();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             return;

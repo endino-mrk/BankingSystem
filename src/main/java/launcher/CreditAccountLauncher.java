@@ -9,6 +9,7 @@ import launcher.AccountLauncher;
 import account.Account;
 import account.BalanceHolder;
 import account.LoanHolder;
+import services.transaction.TransactionLogService;
 
 
 public class CreditAccountLauncher extends AccountLauncher {
@@ -36,7 +37,7 @@ public class CreditAccountLauncher extends AccountLauncher {
             int choice = Main.getOption();
 
             if (choice == 1) {
-                account.getLoan();
+                System.out.println("ACCOUNT CREDIT: " + account.getLoan());
             }
             else if (choice == 2){
                 loan(account);
@@ -45,6 +46,9 @@ public class CreditAccountLauncher extends AccountLauncher {
                 recompense(account);
             }
             else if (choice == 4) {
+                TransactionLogService.showTransactions(account);
+            }
+            else if (choice == 5) {
                 logSession.destroyLogSession();
                 System.out.println("logging out");
                 return; //terminates

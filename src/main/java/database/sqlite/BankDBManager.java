@@ -139,7 +139,7 @@ public class BankDBManager {
      * @param rs The ResultSet to check.
      * @return True if the ResultSet is empty, false otherwise.
      */
-    private static boolean isEmpty(ResultSet rs) {
+    protected static boolean isEmpty(ResultSet rs) {
         try {
             return (!rs.isBeforeFirst() && rs.getRow() == 0); // returns true if result set is empty
         } catch (SQLException e) {

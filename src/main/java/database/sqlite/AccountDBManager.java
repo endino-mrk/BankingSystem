@@ -193,7 +193,7 @@ public class AccountDBManager {
      * @return The SavingsAccount object or null if not found.
      */
     private static Account fetchSavings() {
-        String query = "SELECT accounts.*, loan " +
+        String query = "SELECT accounts.*, balance " +
                 "FROM accounts " +
                 "INNER JOIN savings_accounts ON savings_accounts.account_id = accounts.account_id;";
         ResultSet account = DBConnection.runQuery(query);
@@ -210,7 +210,7 @@ public class AccountDBManager {
      * @param account The BalanceHolder account to update.
      */
     public static void updateAccountBalance(BalanceHolder account) {
-        String query = "UPDATE savings_account " +
+        String query = "UPDATE savings_accounts " +
                 "SET balance = " + account.getBalance() + " " +
                 "WHERE account_id = '" + ((Account) account).getAccountNumber() + "';";
         DBConnection.runQuery(query);

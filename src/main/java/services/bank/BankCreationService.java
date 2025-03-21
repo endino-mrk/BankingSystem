@@ -27,7 +27,7 @@ public class BankCreationService {
         bankName.setFieldValue("Enter Bank Name: ", false);
 
         // Randomized ID
-        String bankID = IDGenerator.BankIDgenerator(bankName.getFieldValue());
+        String bankID = IDGenerator.bankIDGenerator(bankName.getFieldValue());
         System.out.println("Generated Bank ID: " + bankID);
 
         // Bank passcode field

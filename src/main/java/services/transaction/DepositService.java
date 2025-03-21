@@ -21,6 +21,9 @@ public class DepositService {
         if (canDeposit(account, amount)) {
             BalanceManager.adjustAccountBalance((BalanceHolder) account, amount);
             AccountDBManager.updateAccountBalance((BalanceHolder) account);
+
+            generateTransaction(account, amount);
+
             System.out.println("Deposit successful!");
             return true;
             }
@@ -34,5 +37,10 @@ public class DepositService {
             return false;
         }
         return true;
+    }
+
+    private static void generateTransaction(Account account, double amount) {
+        String description = String.format("+%.2f via Cash Deposit.", amount);
+        TransactionLogService.logTransaction(account, Transaction.Transactions.Deposit, description);
     }
 }

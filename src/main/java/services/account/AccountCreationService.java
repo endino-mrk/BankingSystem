@@ -5,7 +5,6 @@ import account.CreditAccount;
 import account.SavingsAccount;
 import bank.Bank;
 import database.sqlite.AccountDBManager;
-import launcher.BankLauncher;
 import main.Field;
 import services.IDGenerator;
 
@@ -51,7 +50,7 @@ public class AccountCreationService {
      */
     public static void createNewCreditAccount(Bank bank) {
         ArrayList<Field<String, ?>> info = createNewAccount();
-        String accountNumber = IDGenerator.AccountIDGenerator(bank);
+        String accountNumber = IDGenerator.accountIDGenerator(bank);
 
         CreditAccount creditAccount = new CreditAccount(bank.getID(), accountNumber, info.get(0).getFieldValue(), info.get(1).getFieldValue(), info.get(2).getFieldValue(), info.get(3).getFieldValue());
         addNewAccount(bank, creditAccount);
@@ -67,9 +66,9 @@ public class AccountCreationService {
 
         // Initializes and sets initial balance of account
         Field<Double, Double> balance = new Field("balance", Double.class, 500.0, new Field.DoubleFieldValidator());
-        balance.setFieldValue("Enter initial balance: (minimum initial balance: 500.00)");
+        balance.setFieldValue("Enter initial balance (>= 500.00): ");
 
-        String accountNumber = IDGenerator.AccountIDGenerator(bank);
+        String accountNumber = IDGenerator.accountIDGenerator(bank);
 
         SavingsAccount savingsAccount = new SavingsAccount(bank.getID(), accountNumber, info.get(0).getFieldValue(), info.get(1).getFieldValue(), info.get(2).getFieldValue(), info.get(3).getFieldValue(), balance.getFieldValue());
         addNewAccount(bank, savingsAccount);

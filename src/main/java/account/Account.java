@@ -2,6 +2,7 @@ package account;
 
 import bank.Bank;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import services.transaction.Transaction;
@@ -14,11 +15,11 @@ public abstract class Account {
     private final String accountNumber;
     private final String ownerFName, ownerLName, ownerEmail;
     private String pin;
-    private final HashMap<String, Transaction.Transactions> Transactions;
+    private final ArrayList<Transaction> Transactions;
 
     /**
      *
-     * @param bank
+     * @param bankID
      * @param accountnumber
      * @param ownerfname
      * @param ownerlname
@@ -32,7 +33,7 @@ public abstract class Account {
         this.ownerLName = ownerlname;
         this.ownerEmail = owneremail;
         this.pin = pin;
-        this.Transactions = new HashMap<>();
+        this.Transactions = new ArrayList<>();
     }
 
     public String getAccountNumber() {
@@ -63,12 +64,16 @@ public abstract class Account {
         return pin;
     }
 
+    public ArrayList<Transaction> getTransactions() {
+        return Transactions;
+    }
+
     public String toString() {
         return String.format("%s - %s", accountNumber, getOwnerFullName());
     }
 
     public String csvString() {
-        return "('" + this.accountNumber + "', '" + this.bankID + "', '" + this.getOwnerFName() + "', '" + this.getOwnerLName() + "', '" + this.ownerEmail + "', '" + this.pin + "');";
+        return "('" + this.accountNumber + "', '" + this.bankID + "', '" + this.ownerFName + "', '" + this.ownerLName + "', '" + this.ownerEmail + "', '" + this.pin + "');";
     }
 
     public abstract void init();

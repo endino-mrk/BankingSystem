@@ -20,7 +20,7 @@ public enum Menu {
     /**
      * Bank.Bank menu options after logging in, assuming that it was successful.
      */
-    BankMenu(new String[]{ "Show Accounts", "New Accounts", "Log Out" }, 31),
+    BankMenu(new String[]{ "Show Accounts", "Create New Account", "Log Out" }, 31),
     /**
      * Main.Menu option inside Bank.Bank module to show a particular set of accounts.
      */

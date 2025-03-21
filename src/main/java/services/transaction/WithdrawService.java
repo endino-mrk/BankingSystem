@@ -7,6 +7,8 @@ import database.sqlite.BankDBManager;
 import services.BalanceManager;
 import account.Account;
 
+import java.security.IdentityScope;
+
 /**
  * Handles withdrawal operation of balance
  */
@@ -17,6 +19,7 @@ public class WithdrawService {
             if(BalanceManager.hasEnoughBalance(account, amount)) {
                 BalanceManager.adjustAccountBalance(account, -amount); // Subtracts amount from balance
                 AccountDBManager.updateAccountBalance(account);
+                generateTransaction((Account) account, amount);
                 System.out.printf("Withdrawal successful!");
                 return true;
             }
@@ -33,5 +36,10 @@ public class WithdrawService {
             return false;
         }
         return true;
+    }
+
+    private static void generateTransaction(Account account, double amount) {
+        String description = String.format("-%.2f withdrawed from this account's balance.", amount);
+        TransactionLogService.logTransaction(account, Transaction.Transactions.Withdraw, description);
     }
 }

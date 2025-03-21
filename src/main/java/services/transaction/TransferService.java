@@ -24,6 +24,7 @@ public class TransferService {
 
             BalanceManager.adjustAccountBalance(recipient, amount);
             AccountDBManager.updateAccountBalance(recipient);
+            generateTransaction((Account) source, (Account) recipient, amount);
             System.out.println("Transfer successful!");
             return true;
         }
@@ -34,5 +35,13 @@ public class TransferService {
 
     public static boolean transfer(Bank sourceBank, BalanceHolder source, BalanceHolder recipient, double amount) {
         return transfer(source, recipient, amount + sourceBank.getProcessingFee());
+    }
+
+    private static void generateTransaction(Account source, Account recipient, double amount) {
+        String sourceDesc = String.format("-%.2f transferred from this account to %s with Acc. No. %s.", amount, recipient.getOwnerFullName(), recipient.getAccountNumber());
+        TransactionLogService.logTransaction(source, Transaction.Transactions.FundTransfer, sourceDesc);
+
+        String recipientDesc = String.format("+%.2f transferred to this account from %s with Acc. No. %s.", amount, source.getOwnerFullName(), source.getAccountNumber());
+        TransactionLogService.logTransaction(recipient, Transaction.Transactions.FundTransfer, recipientDesc);
     }
 }

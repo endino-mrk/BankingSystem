@@ -1,5 +1,6 @@
 package services.transaction;
 
+import account.Account;
 import account.BalanceHolder;
 import account.LoanHolder;
 import database.sqlite.AccountDBManager;
@@ -23,6 +24,9 @@ public class PaymentService {
             AccountDBManager.updateAccountLoan(source);
             BalanceManager.adjustAccountBalance(recipient, amount);
             AccountDBManager.updateAccountBalance(recipient);
+
+            generateTransaction((Account) source, (Account) recipient, amount);
+
             System.out.println("Payment successful!");
             return true;
         }
@@ -48,5 +52,14 @@ public class PaymentService {
         BalanceManager.insufficientBalance();
         System.out.print("Payment unsuccessful!");
         return false;
+    }
+
+    private static void generateTransaction(Account source, Account recipient, double amount) {
+        String sourceDesc = String.format("-%.2f paid to %s with Acc. No. %s.", amount, recipient.getOwnerFullName(), recipient.getAccountNumber());
+        TransactionLogService.logTransaction(source, Transaction.Transactions.Payment, sourceDesc);
+
+        // record transaction of recipient
+        String recipientDesc = String.format("+%.2f received from %s with Acc. No. %s", amount, source.getOwnerFullName(), source.getAccountNumber());
+        TransactionLogService.logTransaction(recipient, Transaction.Transactions.Payment, recipientDesc);
     }
 }
