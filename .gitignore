@@ -2,6 +2,7 @@
 .idea/
 *.iml
 *.xml
+!pom.xml
 
 # Ignore compiled files and build artifacts
 out/

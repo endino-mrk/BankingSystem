@@ -59,6 +59,6 @@ public class Transaction {
 //    }
 
     public String csvString() {
-        return "('" + this.accountNumber + "', '" + this.transactionType + "', '" + this.description + "')";
+        return String.format("('%s', '%s', '%s')", this.accountNumber, this.transactionType, this.description);
     }
 }
