@@ -39,8 +39,8 @@ public class BankDBManager {
      */
     public static void addBank(Bank bank) {
         if (!bankExists(bank.getID())) {
-            String values = bank.csvString();
-            DBConnection.runQuery("INSERT INTO Banks (bank_id, name, passcode, depositLimit, creditLimit, withdrawLimit, processingFee) VALUES " + values + ";");
+            String query = "INSERT INTO Banks (bank_id, name, passcode, depositLimit, creditLimit, withdrawLimit, processingFee) VALUES (?, ?, ?, ?, ?, ?, ?);";
+            DBConnection.runQuery(query, bank.getID(), bank.getName(), bank.getPasscode(), bank.getDepositLimit(), bank.getCreditLimit(), bank.getWithdrawLimit(), bank.getProcessingFee());
         }
     }
 

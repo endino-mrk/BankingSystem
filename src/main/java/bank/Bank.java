@@ -59,8 +59,6 @@ public class Bank {
         this.BANKACCOUNTS = new HashMap<>();
     }
 
-    // CLASS METHODS HERE W/ PROPER AND COMPLETE DOC STRINGS
-
     public String getName() {
         return this.name;
     }
@@ -93,7 +91,4 @@ public class Bank {
         return String.format("%s - %s", ID, name);
     }
 
-    public String csvString() {
-        return "('" + this.ID + "', '" + this.name + "', '" + this.passcode + "', " + this.depositLimit + ", " + this.withdrawLimit + ", " + this.creditLimit + ", " + this.processingFee + ")";
-    }
 }
