@@ -22,9 +22,6 @@ public class TransactionDBManager {
     }
 
     public static void addTransaction(String accountID, Transaction.Transactions type, String description) {
-//        String values = transaction.csvString();
-//        String query = "INSERT INTO transactions (account_id, type, description) VALUES " + values + ";";
-//        DBConnection.runQuery(query);
 
         String query = "INSERT INTO transactions (account_id, type, description) VALUES (?, ?, ?);";
         DBConnection.runQuery(query, accountID, type.toString(), description);

@@ -18,8 +18,6 @@ public class DBConnection {
         BankDBManager.createTable();
         AccountDBManager.createTable();
         TransactionDBManager.createTable();
-//        Statement statement = sqliteConnection.createStatement();
-//        statement.executeQuery("PRAGMA busy_timeout = 5000");
     }
 
     /**

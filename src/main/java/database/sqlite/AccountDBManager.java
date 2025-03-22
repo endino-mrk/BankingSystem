@@ -119,14 +119,6 @@ public class AccountDBManager {
             } else {
                 return a;
             }
-
-            // fetch transactions
-//            ArrayList<Transaction> transactions = TransactionDBManager.getTransactions(accountID);
-//            if (transactions != null) {
-//                for (Transaction t: transactions) {
-//                    a.getTransactions().add(t);
-//                }
-//            }
         }
         return a;
     }

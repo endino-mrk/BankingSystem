@@ -96,7 +96,6 @@ public class BankDisplayerService {
 
         if (Main.getOption() == 1) {
             AccountCreationService.createNewCreditAccount(bank);
-//            .createNewCreditAccount();
         }
         else if (Main.getOption() == 2) {
             AccountCreationService.createNewSavingsAccount(bank);
@@ -105,9 +104,5 @@ public class BankDisplayerService {
         String t = (Main.getOption() == 1) ? "Credit" : "Savings";
         System.out.println(t + " account has been created and added to bank.");
     }
-
-//    public static double getProcessingFee(String bankId) {
-//        return BankDBManager.getBankProcessingFee(bankId);
-//    }
 }
 

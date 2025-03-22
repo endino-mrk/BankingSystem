@@ -10,15 +10,6 @@ import services.LoanManager;
  * Manages credit-related transactions.
  */
 public class CreditService {
-//    public static boolean credit(LoanHolder account, double amount) {
-//        if (canCredit(account, amount)) {
-//            LoanManager.adjustLoanAmount((LoanHolder)account, amount);
-//            //insert Update to database logic
-//            return true;
-//        }
-//        return false;
-//    }
-
     /**
      * Checks if this credit account can do additional credit transactions if the amount to credit will not exceeded the credit limit set by the bank associated to this Credit Account.
      * @param account The account being referenced

@@ -78,33 +78,5 @@ public class IDGenerator {
      *
      * @return A unique reference number as a String.
      */
-//    public static String RefNumGenerator() {
-//        LocalDate today = LocalDate.now();
-//        LocalTime now = LocalTime.now();
-//        Random rand = new Random();
-//
-//        while (true) {
-//            // Timedate
-//            String month = String.format("%02d", today.getMonthValue());
-//            String day = String.format("%02d", today.getDayOfMonth());
-//            int year = today.getYear();
-//
-//            // Time (Hours and minutes)
-//            String hour = String.format("%02d", now.getHour());
-//            String minute = String.format("%02d", now.getMinute());
-//
-//            // Random digits
-//            String digits = String.format("%04d", rand.nextInt(10000));
-//
-//            String refNum = month + day + String.valueOf(year) + month + day + hour + minute + digits;
-//
-//            // assume that the condition is correct to check if the refNum already exist
-//            if (!getrefNum) {
-//                return refNum;
-//            }
-//        }
-//
-//        return null;
-//    }
 
 }

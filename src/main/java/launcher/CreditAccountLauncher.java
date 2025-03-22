@@ -30,21 +30,20 @@ public class CreditAccountLauncher extends AccountLauncher {
             Main.showMenu(41);
 
             Main.setOption();
-            int choice = Main.getOption();
 
-            if (choice == 1) {
+            if (Main.getOption() == 1) {
                 System.out.println("ACCOUNT CREDIT: " + account.getLoan());
             }
-            else if (choice == 2){
+            else if (Main.getOption() == 2){
                 loan(account);
             }
-            else if (choice == 3){
+            else if (Main.getOption() == 3){
                 recompense(account);
             }
-            else if (choice == 4) {
+            else if (Main.getOption() == 4) {
                 TransactionLogService.showTransactions(account);
             }
-            else if (choice == 5) {
+            else if (Main.getOption() == 5) {
                 logSession.destroyLogSession();
                 System.out.println("logging out");
                 return; //terminates
@@ -59,14 +58,6 @@ public class CreditAccountLauncher extends AccountLauncher {
         Field<String, String> recipientID = new Field("recipientID", String.class, "", new Field.StringFieldValidator());
 
         recipientID.setFieldValue("Enter recipient's account number: ");
-
-        // fetch recipient type
-//        String recipient = AccountDBManager.fetchType(recipientID.getFieldValue());
-//
-//        if (!recipient.equals("1")) {
-//            System.out.println("You can only pay to a savings account.");
-//            return;
-//        }
 
         if (AccountDBManager.existsInSavings(recipientID.getFieldValue())) {
             amount.setFieldValue("Enter amount: ");

@@ -54,7 +54,6 @@ public class AccountCreationService {
 
         CreditAccount creditAccount = new CreditAccount(bank.getID(), accountNumber, info.get(0).getFieldValue(), info.get(1).getFieldValue(), info.get(2).getFieldValue(), info.get(3).getFieldValue());
         addNewAccount(bank, creditAccount);
-//        return creditAccount;
     }
 
     /** Create a new savings account. Utilizes the createNewAccount() method.
@@ -72,7 +71,6 @@ public class AccountCreationService {
 
         SavingsAccount savingsAccount = new SavingsAccount(bank.getID(), accountNumber, info.get(0).getFieldValue(), info.get(1).getFieldValue(), info.get(2).getFieldValue(), info.get(3).getFieldValue(), balance.getFieldValue());
         addNewAccount(bank, savingsAccount);
-//        return savingsAccount;
     }
 
     /** Adds a new account to this bank, if the account number of the new account does not exist inside

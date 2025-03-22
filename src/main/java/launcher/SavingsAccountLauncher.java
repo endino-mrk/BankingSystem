@@ -35,24 +35,23 @@ public class SavingsAccountLauncher extends AccountLauncher {
             Main.showMenu(51);
 
             Main.setOption();
-            int choice = Main.getOption();
 
-            if (choice == 1) {
+            if (Main.getOption() == 1) {
                 System.out.println("ACCOUNT BALANCE: " + account.getBalance());
             }
-            else if (choice == 2){
+            else if (Main.getOption() == 2){
                 depositProcess(account);
             }
-            else if (choice == 3){
+            else if (Main.getOption() == 3){
                 withdrawalProcess(account);
             }
-            else if (choice == 4){
+            else if (Main.getOption() == 4){
                 transferProcess(account);
             }
-            else if (choice == 5) {
+            else if (Main.getOption() == 5) {
                 TransactionLogService.showTransactions(account);
             }
-            else if (choice == 6) {
+            else if (Main.getOption() == 6) {
                 logSession.destroyLogSession();
                 System.out.println("logging out");
                 return; //terminates
@@ -69,14 +68,18 @@ public class SavingsAccountLauncher extends AccountLauncher {
 
         DepositService.cashDeposit(account, amount.getFieldValue());
     }
-
+    /**
+     * Method that is utilized to withdraw transaction.
+     */
     public static void withdrawalProcess(SavingsAccount account){
         Field<Double, Double> amount = new Field<>("amount", Double.class, 0.0, new Field.DoubleFieldValidator());
         amount.setFieldValue("Enter amount: ");
 
         WithdrawService.withdraw(account, amount.getFieldValue());
     }
-
+    /**
+     * Method that is utilized to fund transfer transaction.
+     */
     public static void transferProcess(SavingsAccount account) {
         Field<Double, Double> amount = new Field<>("amount", Double.class, 0.0, new Field.DoubleFieldValidator());
         // display banks to transfer to
