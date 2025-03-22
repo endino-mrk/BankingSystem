@@ -38,7 +38,10 @@ public enum Menu {
      * SavingsAccount type selection menu. Used when logging in as a SavingsAccount.
      */
     SavingsAccountMenu(new String[]{ "Show Balance", "Deposit", "Withdraw", "Fund Transfer",
-            "Show Transactions", "Logout" }, 51);
+            "Show Transactions", "Logout" }, 51),
+
+    StudentAccountMenu(new String[]{ "Show Balance", "Deposit", "Withdraw", "Fund Transfer",
+            "Show Transactions", "Logout" }, 61);
 
     public final String[] menuOptions;
     public final int menuIdx;
