@@ -94,6 +94,11 @@ public class SavingsAccountLauncher extends AccountLauncher {
         BankDisplayerService.showBanks();
         String bankID = Main.prompt("Select Bank ID: ", true);
 
+        // cannot transfer money to its self
+        if(!BankDBManager.bankExists(bankID)){
+            System.out.println("Invalid Bank ID.");
+            return;
+        }
         // gets bank processing fee. if recipient is from a different bank, fetches recipient bank's fee
         double processingFee = 0.0;
         if(!bankID.equals(account.getBankID())) {
