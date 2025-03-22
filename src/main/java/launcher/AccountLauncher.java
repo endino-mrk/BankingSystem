@@ -41,12 +41,12 @@ public class AccountLauncher {
         // show all banks registered in the system
         BankDisplayerService.showBanks();
         // prompt user to enter bank ID associated with their account
-        while (true) {
-            String bankID = Main.prompt("Enter Bank ID to Access Your Account: ", true);
-            if (BankDBManager.bankExists(bankID)) break;
-            System.out.println("Bank Unavailable. There is no bank with corresponding bank ID registered in the system.");
-        }
 
+        String bankID = Main.prompt("Enter Bank ID to Access Your Account: ", true);
+        if (!BankDBManager.bankExists(bankID)) {
+            System.out.println("Bank Unavailable. There is no bank with corresponding bank ID registered in the system.");
+            return;
+        }
 
         String accountNum = Main.prompt("Enter Account Number: ", true);
         String passcode = Main.prompt("Enter Passcode: ", true);

@@ -17,17 +17,20 @@ public class BankDisplayerService {
      * Output a menu of all registered or created banks in this session.
      */
     public static void showBanks() {
-        // fetch ALL BANKS registered in the database
+        // Fetch ALL BANKS registered in the database
         HashMap<String, String> banks = BankDBManager.getBanks();
-        if (banks != null) {
+        if (banks != null && !banks.isEmpty()) {
             Main.showMenuHeader("Registered Banks");
+            int count = 1;
             for (Map.Entry<String, String> entry : banks.entrySet()) {
-                System.out.println(entry.getKey() + " - " + entry.getValue());
+                System.out.println(count + " - " + entry.getValue());
+                count++;
             }
         } else {
             System.out.println("There are currently no banks registered in the system.");
         }
     }
+
 
 
     /**

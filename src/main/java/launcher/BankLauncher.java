@@ -57,11 +57,14 @@ public class BankLauncher {
         }
 
         String bankID = Main.prompt("Enter ID: ", true);
-
+        if (!BankDBManager.bankExists(bankID)) {
+            System.out.println("Bank Unavailable. There is no bank with corresponding bank ID registered in the system.");
+            return;
+        }
         String passcode = Main.prompt("Enter passcode: ", true);
 
         Bank bank = BankDBManager.fetchBank(bankID);
-        if (bank != null && bank.getPasscode().equals(passcode)) {
+        if (bank.getPasscode().equals(passcode)) {
             logSession.setLogSession(bank);
             System.out.println("Logged in to " + bank.getName() + " bank.");
         } else {
