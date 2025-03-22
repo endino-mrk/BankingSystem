@@ -20,15 +20,6 @@ public class CreditAccount extends Account implements LoanHolder {
         return this.loan;
     }
 
-//    @Override
-//    public String getAccountLoanStatement() {
-//        return "";
-//    }
-
-//    public String csvString() {
-//        return super.csvString() + this.loan + ")";
-//    }
-
     @Override
     public void init() {
         CreditAccountLauncher.creditAccountInit();

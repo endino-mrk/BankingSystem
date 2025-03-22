@@ -22,7 +22,6 @@ public class Bank {
      */
     private double processingFee;
 
-    public final HashMap<String, Account> BANKACCOUNTS;
 
     /**
      * @param ID
@@ -37,7 +36,6 @@ public class Bank {
         this.withdrawLimit = 50000;
         this.creditLimit = 100000;
         this.processingFee = 10;
-        this.BANKACCOUNTS = new HashMap<>();
     }
 
     /**
@@ -56,7 +54,6 @@ public class Bank {
         this.withdrawLimit = withdrawLimit;
         this.creditLimit = creditLimit;
         this.processingFee = processingFee;
-        this.BANKACCOUNTS = new HashMap<>();
     }
 
     // CLASS METHODS HERE W/ PROPER AND COMPLETE DOC STRINGS
@@ -93,7 +90,4 @@ public class Bank {
         return String.format("%s - %s", ID, name);
     }
 
-    public String csvString() {
-        return "('" + this.ID + "', '" + this.name + "', '" + this.passcode + "', " + this.depositLimit + ", " + this.withdrawLimit + ", " + this.creditLimit + ", " + this.processingFee + ")";
-    }
 }
