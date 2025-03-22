@@ -66,15 +66,4 @@ public class AccountLauncher {
      * @param bankID bank id of the associated bank
      * @return Bank object based on selected ID
      */
-//    private static Bank selectBank() {
-////        assocBank = SQLiteBankRepository.getInstance().get(bankID); // fetch bank using bank retriever
-////        return assocBank;
-//        String bankID;
-//        do {
-//            bankID = Main.prompt("Enter Bank ID to Access Your Account: ", true);
-//        } while (!BankDBManager.bankExists(bankID));
-//
-//
-//        return null;
-//    }
 }

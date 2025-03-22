@@ -16,10 +16,7 @@ public class SavingsAccountLauncher extends AccountLauncher {
     // CLASS METHODS HERE W/ PROPER AND COMPLETE DOC STRINGS
     public static SavingsAccount getLoggedAccount(){
         Account loggedAccount = logSession.getLoggedAccount();
-//        if (loggedAccount instanceof SavingsAccount){
             return (SavingsAccount) loggedAccount;
-//        }
-//        return null;
     }
 
     public static void savingsAccountInit(){

@@ -55,18 +55,10 @@ public class CreditAccountLauncher extends AccountLauncher {
      * Method that is utilized to loan payment transaction.
      */
     public static void loan(CreditAccount account){
-        Field<Double, Double> amount = new Field("amount", Double.class, 0.0, new Field.DoubleFieldValidator());
-        Field<String, String> recipientID = new Field("recipientID", String.class, "", new Field.StringFieldValidator());
+        Field<Double, Double> amount = new Field<>("amount", Double.class, 0.0, new Field.DoubleFieldValidator());
+        Field<String, String> recipientID = new Field<>("recipientID", String.class, "", new Field.StringFieldValidator());
 
         recipientID.setFieldValue("Enter recipient's account number: ");
-
-        // fetch recipient type
-//        String recipient = AccountDBManager.fetchType(recipientID.getFieldValue());
-//
-//        if (!recipient.equals("1")) {
-//            System.out.println("You can only pay to a savings account.");
-//            return;
-//        }
 
         if (AccountDBManager.existsInSavings(recipientID.getFieldValue())) {
             amount.setFieldValue("Enter amount: ");

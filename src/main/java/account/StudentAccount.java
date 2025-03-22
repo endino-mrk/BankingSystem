@@ -16,11 +16,7 @@ public class StudentAccount extends Account implements BalanceHolder{
 
     @Override
     public double getBalance() {return this.balance;}
-
-//    @Override
-//    public String getAccountBalanceStatement() {
-//        return "";
-//    }
+    
     @Override
     public void init() {
         StudentAccountLauncher.studentAccountInit();
