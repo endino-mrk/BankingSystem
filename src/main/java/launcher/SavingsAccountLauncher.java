@@ -79,25 +79,31 @@ public class SavingsAccountLauncher extends AccountLauncher {
 
     public static void transferProcess(SavingsAccount account) {
         Field<Double, Double> amount = new Field<>("amount", Double.class, 0.0, new Field.DoubleFieldValidator());
+        Field<String, String> bankID = new Field<>("bankID", String.class, "", new Field.StringFieldValidator());
+        Field<String, String> recipientID = new Field<>("bankID", String.class, "", new Field.StringFieldValidator());
         // display banks to transfer to
         BankDisplayerService.showBanks();
-        String bankID = Main.prompt("Select Bank ID: ", true);
+        bankID.setFieldValue("Enter Bank ID: ");
 
+        if(!BankDBManager.bankExists(bankID.getFieldValue())){
+            System.out.println("Invalid Bank ID.");
+            return;
+        }
         // gets bank processing fee. if recipient is from a different bank, fetches recipient bank's fee
         double processingFee = 0.0;
-        if(!bankID.equals(account.getBankID())) {
-            processingFee = BankDBManager.getBankProcessingFee(bankID);
+        if(!bankID.getFieldValue().equals(account.getBankID())) {
+            processingFee = BankDBManager.getBankProcessingFee(bankID.getFieldValue());
         }
 
-        String recipientID = Main.prompt("Enter Recipient's Account Number: ", true);
+        recipientID.setFieldValue("Enter Recipient ID: ");
         // only proceed if the recipient ID is not the same ID with the source account ID
-        if (!recipientID.equals(account.getAccountNumber())){
+        if (!recipientID.getFieldValue().equals(account.getAccountNumber())){
             // only proceeds with transfer if recipient is a Savings Account
-            if (AccountDBManager.existsInSavings(recipientID)) {
+            if (AccountDBManager.existsInSavings(recipientID.getFieldValue())) {
                 amount.setFieldValue("Enter amount to be transferred: ");
-                TransferService.transfer(account, recipientID, amount.getFieldValue(), processingFee);
+                TransferService.transfer(account, recipientID.getFieldValue(), amount.getFieldValue(), processingFee);
             } else {
-                System.out.println("Invalid recipient account.");
+                System.out.println("Invalid Recipient account.");
             }
         } else {
             System.out.println("Recipient ID must not be the same with the Source Account ID.");

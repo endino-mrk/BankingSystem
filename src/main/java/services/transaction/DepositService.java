@@ -22,7 +22,7 @@ public class DepositService {
             System.out.println("Deposit successful!");
             return true;
             }
-        System.out.println("Deposit unsuccessful!");
+        System.out.println("\nDeposit unsuccessful!");
         return false;
     }
 
