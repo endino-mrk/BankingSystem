@@ -28,25 +28,27 @@ public class CreditAccountLauncher extends AccountLauncher {
         while(true){
             Main.showMenuHeader("Credit Account Menu");
             Main.showMenu(41);
+            String choice = Main.prompt("Select option: ", false);
 
-            Main.setOption();
-
-            if (Main.getOption() == 1) {
-                System.out.println("ACCOUNT CREDIT: " + account.getLoan());
-            }
-            else if (Main.getOption() == 2){
-                loan(account);
-            }
-            else if (Main.getOption() == 3){
-                recompense(account);
-            }
-            else if (Main.getOption() == 4) {
-                TransactionLogService.showTransactions(account);
-            }
-            else if (Main.getOption() == 5) {
-                logSession.destroyLogSession();
-                System.out.println("logging out");
-                return; //terminates
+            switch (choice){
+                case "1":
+                    System.out.println("ACCOUNT CREDIT: " + account.getLoan());
+                    break;
+                case "2":
+                    loan(account);
+                    break;
+                case "3" :
+                    recompense(account);
+                    break;
+                case "4":
+                    TransactionLogService.showTransactions(account);
+                    break;
+                case "5":
+                    logSession.destroyLogSession();
+                    System.out.println("Logging out");
+                    return; //terminates
+                default:
+                    System.out.println("Input error: Invalid input. \n");
             }
         }
     }
@@ -58,6 +60,14 @@ public class CreditAccountLauncher extends AccountLauncher {
         Field<String, String> recipientID = new Field("recipientID", String.class, "", new Field.StringFieldValidator());
 
         recipientID.setFieldValue("Enter recipient's account number: ");
+
+        // fetch recipient type
+//        String recipient = AccountDBManager.fetchType(recipientID.getFieldValue());
+//
+//        if (!recipient.equals("1")) {
+//            System.out.println("You can only pay to a savings account.");
+//            return;
+//        }
 
         if (AccountDBManager.existsInSavings(recipientID.getFieldValue())) {
             amount.setFieldValue("Enter amount: ");

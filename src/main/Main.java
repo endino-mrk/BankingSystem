@@ -49,17 +49,29 @@ public class Main
                 // READ ME: Refer to this code block on how one should properly utilize
                 // showMenuHeader(), showMenu(),
                 // setOption(), and getOption() methods...
-                showMenuHeader("Account Login Menu");
-                showMenu(2, 1);
-                setOption();
-                showMenu(getOption(), 1);
+                while (true){
+                    showMenuHeader("Account Login Menu");
+                    showMenu(2, 1);
+                    setOption();
+                    showMenu(getOption(), 1);
 
-                AccountLauncher.accountLogin();
-                if (AccountLauncher.getLogSession().isLoggedIn()) {
-                // polymorphic call of init method to whatever type the logged account is;
-                    System.out.println(AccountLauncher.getLogSession().getLoggedAccount().getOwnerFullName());
-                  AccountLauncher.getLogSession().getLoggedAccount().init();
+                    if (getOption() == 1){
+
+                        AccountLauncher.accountLogin();
+                        if (AccountLauncher.getLogSession().isLoggedIn()) {
+                            // polymorphic call of init method to whatever type the logged account is;
+                            System.out.println(AccountLauncher.getLogSession().getLoggedAccount().getOwnerFullName());
+                            AccountLauncher.getLogSession().getLoggedAccount().init();
+                        }
+                    }
+                    else if (getOption() == 2){
+                        break;
+                    }
+                    else{
+                        System.out.println("Invalid option!");
+                    }
                 }
+
             }
             // Bank Option
             else if (getOption() == 2)
@@ -88,6 +100,7 @@ public class Main
                             // initializing bankInit
                             BankLauncher.bankInit();
                             break;
+
                         }
                     }
                     // Go back

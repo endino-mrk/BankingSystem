@@ -34,27 +34,35 @@ public class SavingsAccountLauncher extends AccountLauncher {
             Main.showMenuHeader("Savings Account Menu");
             Main.showMenu(51);
 
-            Main.setOption();
+            String choice = Main.prompt("Select option: ", false);
 
-            if (Main.getOption() == 1) {
-                System.out.println("ACCOUNT BALANCE: " + account.getBalance());
-            }
-            else if (Main.getOption() == 2){
-                depositProcess(account);
-            }
-            else if (Main.getOption() == 3){
-                withdrawalProcess(account);
-            }
-            else if (Main.getOption() == 4){
-                transferProcess(account);
-            }
-            else if (Main.getOption() == 5) {
-                TransactionLogService.showTransactions(account);
-            }
-            else if (Main.getOption() == 6) {
-                logSession.destroyLogSession();
-                System.out.println("logging out");
-                return; //terminates
+            switch (choice){
+                case "1":
+                    System.out.println("ACCOUNT BALANCE: " + account.getBalance());
+                    break;
+
+                case "2":
+                    depositProcess(account);
+                    break;
+                case "3":
+                    withdrawalProcess(account);
+                    break;
+
+                case "4":
+                    transferProcess(account);
+                    break;
+
+                case "5" :
+                    TransactionLogService.showTransactions(account);
+                    break;
+
+                case "6":
+                    logSession.destroyLogSession();
+                    System.out.println("Logging out");
+                    return;
+
+                default:
+                    System.out.println("Input error: Invalid input. \n");
             }
         }
     }
