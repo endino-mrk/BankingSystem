@@ -66,9 +66,5 @@ public abstract class Account {
         return String.format("%s - %s", accountNumber, getOwnerFullName());
     }
 
-    public String csvString() {
-        return "('" + this.accountNumber + "', '" + this.bankID + "', '" + this.ownerFName + "', '" + this.ownerLName + "', '" + this.ownerEmail + "', '" + this.pin + "');";
-    }
-
     public abstract void init();
 }
