@@ -79,8 +79,8 @@ public class SavingsAccountLauncher extends AccountLauncher {
 
     public static void transferProcess(SavingsAccount account) {
         Field<Double, Double> amount = new Field<>("amount", Double.class, 0.0, new Field.DoubleFieldValidator());
-        Field<String, String> bankID = new Field<>("bankID", String.class, "", new Field.StringFieldValidator());
-        Field<String, String> recipientID = new Field<>("bankID", String.class, "", new Field.StringFieldValidator());
+        Field<String, Integer> bankID = new Field<>("bankID", String.class, 11, new Field.StringFieldLengthValidator());
+        Field<String, Integer> recipientID = new Field<>("recipientID", String.class, 10, new Field.StringFieldLengthValidator());
         // display banks to transfer to
         BankDisplayerService.showBanks();
         bankID.setFieldValue("Enter Bank ID: ");
