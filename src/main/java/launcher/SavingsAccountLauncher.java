@@ -90,12 +90,17 @@ public class SavingsAccountLauncher extends AccountLauncher {
         }
 
         String recipientID = Main.prompt("Enter Recipient's Account Number: ", true);
-        // only proceeds with transfer if recipient is a Savings Account
-        if (AccountDBManager.existsInSavings(recipientID)) {
-            amount.setFieldValue("Enter amount to be transferred: ");
-            TransferService.transfer(account, recipientID, amount.getFieldValue(), processingFee);
+        // only proceed if the recipient ID is not the same ID with the source account ID
+        if (!recipientID.equals(account.getAccountNumber())){
+            // only proceeds with transfer if recipient is a Savings Account
+            if (AccountDBManager.existsInSavings(recipientID)) {
+                amount.setFieldValue("Enter amount to be transferred: ");
+                TransferService.transfer(account, recipientID, amount.getFieldValue(), processingFee);
+            } else {
+                System.out.println("Invalid recipient account.");
+            }
         } else {
-            System.out.println("Invalid recipient account.");
+            System.out.println("Recipient ID must not be the same with the Source Account ID.");
         }
     }
 }

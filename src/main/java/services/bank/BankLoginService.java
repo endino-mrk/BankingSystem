@@ -21,7 +21,7 @@ public class BankLoginService {
     /**
      * Creates a new login session for the logged in bank user. Sets up a new value for the loggedBank
      * field.
-     * @param b : Bank user that successfully logged in.
+     * @param bank : Bank user that successfully logged in.
      */
     public void setLogSession(Bank bank) {
         if (loggedBank == null) {
