@@ -28,7 +28,6 @@ public class TransactionLogService {
         ArrayList<String> transactions = TransactionDBManager.fetchTransactions(account.getAccountNumber());
         // if there are previous transactions
         if (transactions != null) {
-            System.out.println("Nisulod sya tls showTransa transactions != null");
             for (String t : transactions) {
                 System.out.println(t);
             }

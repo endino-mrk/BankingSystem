@@ -33,7 +33,7 @@ public class WithdrawService {
     }
 
     private static boolean canWithdraw(Account account, double amount) {
-        double withdrawLimit = BankDBManager.getBankLimit(account.getBankID(), BankDBManager.BankFields.withdrawLimit);
+        double withdrawLimit = BankDBManager.getBankWithdrawLimit(account.getBankID());
         if (amount > withdrawLimit) {
             System.out.printf("Amount to withdraw must not go above %.2f.", withdrawLimit);
             return false;

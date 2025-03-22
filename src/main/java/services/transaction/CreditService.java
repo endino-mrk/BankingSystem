@@ -26,7 +26,7 @@ public class CreditService {
      * @return Flag if this account can continue with the credit transaction.
      */
     public static boolean canCredit(LoanHolder account, double amount){
-        double creditLimit = BankDBManager.getBankLimit(((Account) account).getBankID(), BankDBManager.BankFields.creditLimit);
+        double creditLimit = BankDBManager.getBankCreditLimit(((Account) account).getBankID());
         if (account.getLoan() + amount > creditLimit) {
             System.out.printf("This account's total loan must not go above %.2f.", creditLimit);
             return false;

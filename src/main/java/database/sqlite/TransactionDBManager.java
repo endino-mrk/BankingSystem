@@ -35,19 +35,15 @@ public class TransactionDBManager {
         String query = "SELECT * FROM transactions WHERE account_id = ?;";
         ResultSet rs = DBConnection.runQuery(query, accountID);
         if (!isEmpty(rs)) {
-            System.out.println("Nisulod sya DB fetchTransa");
             ArrayList<String> transactions = new ArrayList<>();
             try {
                 while(rs.next()) {
                     // add transactions from result set to transactions ArrayList
-                    transactions.add(String.format("[Acc. No. %s] - [%s] -- ", rs.getString("account_id"), rs.getString("type"), rs.getString("description")));
-                    System.out.println("Nisulod sya DB fetchTransa while rs.next");
+                    transactions.add(String.format("[Acc. No. %s] - [%s] -- %s", rs.getString("account_id"), rs.getString("type"), rs.getString("description")));
                 }
-                System.out.println("Nisulod sya DB fetchTransa return transactions");
                 return transactions;
             } catch (SQLException e) {}
         }
-        System.out.println("Nisulod sya DB fetchTransa return null");
         return null;
     }
 }

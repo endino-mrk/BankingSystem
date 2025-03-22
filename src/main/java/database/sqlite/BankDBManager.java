@@ -145,29 +145,33 @@ public class BankDBManager {
         return extractAccountDetails(savingsAccounts);
      }
 
-     public static double getBankProcessingFee(String bankId) {
-        String query = String.format("SELECT processingFee FROM banks WHERE bank_id = %s", bankId);
-        ResultSet rs = DBConnection.runQuery(query);
-        double pf = 0.0;
-        try {
-            rs.next();
-            pf = rs.getDouble(0);
-        } catch (SQLException ex) {
-            //
-        }
-        return pf;
+     public static double getBankProcessingFee(String bankID) {
+        return getBankDoubleField(bankID, BankFields.processingFee);
      }
 
-     public static double getBankLimit(String bankID, BankFields limitType) {
-        String query = "SELECT ? FROM banks WHERE bank_id = ?;";
-        ResultSet rs = DBConnection.runQuery(query, limitType.toString(), bankID);
-        double limit = 0.0;
-        try {
-            if (!isEmpty(rs)) {
-                limit = rs.getDouble(limitType.toString());
-            }
-        } catch (SQLException e) {}
-        return limit;
+     public static double getBankWithdrawLimit(String bankID) {
+        return getBankDoubleField(bankID, BankFields.withdrawLimit);
+     }
+
+     public static double getBankDepositLimit(String bankID) {
+         return getBankDoubleField(bankID, BankFields.depositLimit);
+     }
+
+     public static double getBankCreditLimit(String bankID) {
+         return getBankDoubleField(bankID, BankFields.creditLimit);
+     }
+
+     private static double getBankDoubleField(String bankID, BankFields field) {
+         String query = String.format("SELECT %s FROM banks WHERE bank_id = ?;", field);
+         ResultSet rs = DBConnection.runQuery(query, bankID);
+         double d = 0.0;
+         try {
+             if (!isEmpty(rs)) {
+                 rs.next();
+                 d = rs.getDouble(field.toString());
+             }
+         } catch (SQLException e) {}
+         return d;
      }
 
     /**

@@ -172,7 +172,7 @@ public class AccountDBManager {
      * @return True if it exists in credit, false otherwise.
      */
     public static boolean existsInCredit(String accountID) {
-        String query = "SELECT account_id FROM credit_accounts WHERE account_id = ?';";
+        String query = "SELECT account_id FROM credit_accounts WHERE account_id = ?;";
         return exists(query, accountID);
     }
 

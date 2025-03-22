@@ -28,7 +28,7 @@ public class DepositService {
 
     private static boolean canDeposit(BalanceHolder account, double amount) {
         // fetch bank deposit limit from database
-        double depositLimit = BankDBManager.getBankLimit(((Account) account).getBankID(), BankDBManager.BankFields.depositLimit);
+        double depositLimit = BankDBManager.getBankDepositLimit(((Account) account).getBankID());
         if (amount > depositLimit) {
             System.out.printf("Amount to deposit must not go above %.2f.", depositLimit);
             return false;
