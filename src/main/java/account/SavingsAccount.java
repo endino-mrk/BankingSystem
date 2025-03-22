@@ -32,6 +32,6 @@ public class SavingsAccount extends Account implements BalanceHolder {
 
     @Override
     public void init() {
-//        SavingsAccountLauncher.savingsAccountInit();
+        SavingsAccountLauncher.savingsAccountInit();
     }
 }

@@ -1,36 +1,35 @@
 package services.transaction;
 
 import account.Account;
+import database.sqlite.AccountDBManager;
 import database.sqlite.TransactionDBManager;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class TransactionLogService {
 
     /**
-     * Records a transaction to an account.
-     * @param account
+     * Records an account transaction.
+     * @param accountNumber
      * @param type
      * @param description
      */
-    public static void logTransaction(Account account, Transaction.Transactions type, String description) {
-        Transaction transaction = new Transaction(account.getAccountNumber(), type, description);
-        account.getTransactions().add(transaction); // add to account transactions ArrayList
-        TransactionDBManager.addTransaction(transaction); // add to database
+    public static void logTransaction(String accountNumber, Transaction.Transactions type, String description) {
+        if (AccountDBManager.accountExists(accountNumber)) {
+            TransactionDBManager.addTransaction(accountNumber, type, description);
+        }
     }
 
     /**
-     * Displays the transactions of an account.
+     * Displays the transactions of an account, fetches directly from database.
      * @param account
      */
     public static void showTransactions(Account account) {
-//        ArrayList<Transaction> transactions = TransactionDBManager.getTransactions(account.getAccountNumber());
-//        if (transactions != null)
-        ArrayList<Transaction> transactions = account.getTransactions();
-        if (!transactions.isEmpty()) {
-            for (Transaction t : transactions) {
+        // fetches all transactions of account in database
+        ArrayList<String> transactions = TransactionDBManager.fetchTransactions(account.getAccountNumber());
+        // if there are previous transactions
+        if (transactions != null) {
+            System.out.println("Nisulod sya tls showTransa transactions != null");
+            for (String t : transactions) {
                 System.out.println(t);
             }
         }

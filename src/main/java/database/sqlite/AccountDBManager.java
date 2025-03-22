@@ -4,6 +4,7 @@ import account.*;
 import account.CreditAccount;
 import account.SavingsAccount;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 import account.Account;
 import database.sqlite.DBConnection;
 import services.transaction.Transaction;
+
+import javax.xml.transform.Result;
 
 public class AccountDBManager {
     /**
@@ -24,6 +27,7 @@ public class AccountDBManager {
                 "last_name TEXT NOT NULL," +
                 "email TEXT NOT NULL," +
                 "pin TEXT NOT NULL," +
+                "type INT NOT NULL," +
                 "FOREIGN KEY (bank_id) REFERENCES banks (bank_id)" +
                 ");";
         DBConnection.runQuery(query);
@@ -61,15 +65,19 @@ public class AccountDBManager {
      */
     public static void addAccount(Account account) {
         if (!accountExists(account.getAccountNumber())) {
-            String values = account.csvString();
-            String query = "INSERT INTO accounts (account_id, bank_id, first_name, last_name, email, pin) VALUES " + values + ";";
-            DBConnection.runQuery(query);
+            String query = "INSERT INTO accounts (account_id, bank_id, first_name, last_name, email, pin, type) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
-            if (account instanceof SavingsAccount) {
+            // gets account type; 1 = Savings, 2 = Credit
+            int type = account instanceof SavingsAccount ? 1 : 2;
+
+            DBConnection.runQuery(query, account.getAccountNumber(), account.getBankID(), account.getOwnerFName(), account.getOwnerLName(), account.getOwnerEmail(), account.getPin(), type);
+
+            if (type == 1) {
                 addSavingsAccount((SavingsAccount) account);
-            } else if (account instanceof CreditAccount) {
+            } else {
                 addCreditAccount((CreditAccount) account);
             }
+
         }
     }
 
@@ -78,11 +86,9 @@ public class AccountDBManager {
      * @param account The savings account object to add.
      */
     private static void addSavingsAccount(SavingsAccount account) {
-//        String values = account.csvString();
         if (!existsInSavings(account.getAccountNumber())) {
-            String values = String.format("('%s', %f)", account.getAccountNumber(), account.getBalance());
-            String query = "INSERT INTO savings_accounts (account_id, balance) VALUES " + values + ";";
-            DBConnection.runQuery(query);
+            String query = "INSERT INTO savings_accounts (account_id, balance) VALUES (?, ?);";
+            DBConnection.runQuery(query, account.getAccountNumber(), account.getBalance());
         }
     }
 
@@ -91,11 +97,9 @@ public class AccountDBManager {
      * @param account The credit account object to add.
      */
     private static void addCreditAccount(CreditAccount account) {
-//        String values = account.csvString();
         if (!existsInCredit(account.getAccountNumber())) {
-            String values = String.format("('%s', %f)", account.getAccountNumber(), account.getLoan());
-            String query = "INSERT INTO credit_accounts (account_id, loan) VALUES " + values + ";";
-            DBConnection.runQuery(query);
+            String query = "INSERT INTO credit_accounts (account_id, loan) VALUES (?, ?);";
+            DBConnection.runQuery(query, account.getAccountNumber(), account.getLoan());
         }
 
     }
@@ -109,20 +113,20 @@ public class AccountDBManager {
         Account a = null;
         if (accountExists(accountID)) {
             if (existsInSavings(accountID)) {
-                 a = fetchSavings();
+                 a = fetchSavings(accountID);
             } else if (existsInCredit(accountID)) {
-                a = fetchCredit();
+                a = fetchCredit(accountID);
             } else {
                 return a;
             }
 
             // fetch transactions
-            ArrayList<Transaction> transactions = TransactionDBManager.getTransactions(accountID);
-            if (!transactions.isEmpty()) {
-                for (Transaction t: transactions) {
-                    a.getTransactions().add(t);
-                }
-            }
+//            ArrayList<Transaction> transactions = TransactionDBManager.getTransactions(accountID);
+//            if (transactions != null) {
+//                for (Transaction t: transactions) {
+//                    a.getTransactions().add(t);
+//                }
+//            }
         }
         return a;
     }
@@ -132,8 +136,8 @@ public class AccountDBManager {
      * @param query The SQL query to execute.
      * @return True if the account exists, false otherwise.
      */
-    private static boolean exists(String query) {
-        ResultSet account = DBConnection.runQuery(query);
+    private static boolean exists(String query, Object... params) {
+        ResultSet account = DBConnection.runQuery(query, params);
         try {
             return account.next(); // returns true if account exists
         } catch (SQLException e) {
@@ -148,8 +152,8 @@ public class AccountDBManager {
      * @return True if the account exists, false otherwise.
      */
     public static boolean accountExists(String accountID) {
-        String query = "SELECT account_id FROM accounts WHERE account_id = '" + accountID + "';";
-        return exists(query);
+        String query = "SELECT account_id FROM accounts WHERE account_id = ?;";
+        return exists(query, accountID);
     }
 
     /**
@@ -158,8 +162,8 @@ public class AccountDBManager {
      * @return True if it exists in savings, false otherwise.
      */
     public static boolean existsInSavings(String accountID) {
-        String query = "SELECT account_id FROM savings_accounts WHERE account_id = '" + accountID + "';";
-        return exists(query);
+        String query = "SELECT account_id FROM savings_accounts WHERE account_id = ?;";
+        return exists(query, accountID);
     }
 
     /**
@@ -168,8 +172,8 @@ public class AccountDBManager {
      * @return True if it exists in credit, false otherwise.
      */
     public static boolean existsInCredit(String accountID) {
-        String query = "SELECT account_id FROM credit_accounts WHERE account_id = '" + accountID + "';";
-        return exists(query);
+        String query = "SELECT account_id FROM credit_accounts WHERE account_id = ?';";
+        return exists(query, accountID);
     }
 
     /**
@@ -179,19 +183,38 @@ public class AccountDBManager {
      * @return True if the account exists in the bank, false otherwise.
      */
     public static boolean existsInBank(String bankID, String accountID) {
-        String query = "SELECT * FROM accounts WHERE bank_id = '" + bankID + "' AND account_id = '" + accountID + "';";
-        return exists(query);
+        String query = "SELECT * FROM accounts WHERE bank_id = ? AND account_id = ?;";
+        return exists(query, bankID, accountID);
+    }
+
+    /**
+     * Fetch account type of account. 1 = Savings, 2 = Credit, null = does not exists
+     * @param accountNumber
+     * @return
+     */
+    public static String fetchType(String accountNumber) {
+        String type = null;
+        if (accountExists(accountNumber)) {
+            String query = "SELECT type FROM accounts WHERE account_id = ?;";
+            ResultSet rs = DBConnection.runQuery(query, accountNumber);
+
+            try {
+                rs.next();
+                type = rs.getString("type");
+            } catch (SQLException e) {}
+        }
+        return type;
     }
 
     /**
      * Fetches a credit account and returns it as an Account object.
      * @return The CreditAccount object or null if not found.
      */
-    private static Account fetchCredit() {
-        String query = "SELECT accounts.*, loan " +
-                "FROM accounts " +
-                "INNER JOIN credit_accounts ON credit_accounts.account_id = accounts.account_id;";
-        ResultSet account = DBConnection.runQuery(query);
+    private static Account fetchCredit(String accountID) {
+        String query = "SELECT accounts.*, loan FROM accounts " +
+                "INNER JOIN credit_accounts ON credit_accounts.account_id = accounts.account_id " +
+                "WHERE accounts.account_id = ?;";
+        ResultSet account = DBConnection.runQuery(query, accountID);
         try {
             Account a = new CreditAccount(account.getString("bank_id"), account.getString("account_id"), account.getString("first_name"), account.getString("last_name"), account.getString("email"), account.getString("pin"));
             ((CreditAccount) a).setLoan(account.getDouble("loan"));
@@ -208,11 +231,11 @@ public class AccountDBManager {
      * Fetches a savings account and returns it as an Account object.
      * @return The SavingsAccount object or null if not found.
      */
-    private static Account fetchSavings() {
-        String query = "SELECT accounts.*, balance " +
-                "FROM accounts " +
-                "INNER JOIN savings_accounts ON savings_accounts.account_id = accounts.account_id;";
-        ResultSet account = DBConnection.runQuery(query);
+    private static Account fetchSavings(String accountID) {
+        String query = "SELECT accounts.*, balance FROM accounts " +
+                "INNER JOIN savings_accounts ON savings_accounts.account_id = accounts.account_id " +
+                "WHERE accounts.account_id = ?;";
+        ResultSet account = DBConnection.runQuery(query, accountID);
         try {
             Account a = new SavingsAccount(account.getString("bank_id"), account.getString("account_id"), account.getString("first_name"), account.getString("last_name"), account.getString("email"), account.getString("pin"), account.getDouble("balance"));
             return a;
@@ -224,23 +247,47 @@ public class AccountDBManager {
 
     /**
      * Updates the balance of a savings account.
-     * @param account The BalanceHolder account to update.
+     * @param accountNumber The BalanceHolder account to update.
+     * @param amount Amount to be changed. Either positive or negative value.
      */
-    public static void updateAccountBalance(BalanceHolder account) {
-        String query = "UPDATE savings_accounts " +
-                "SET balance = " + account.getBalance() + " " +
-                "WHERE account_id = '" + ((Account) account).getAccountNumber() + "';";
-        DBConnection.runQuery(query);
+    public static void updateAccountBalance(String accountNumber, double amount) {
+        // Fetch account balance of account number
+        String query = "SELECT balance FROM savings_accounts WHERE account_id = ?;";
+        ResultSet rs = DBConnection.runQuery(query, accountNumber);
+        double balance = 0.0;
+        try {
+            rs.next();
+            balance = rs.getDouble("balance");
+        } catch(SQLException ex) {
+
+        }
+
+        // Update balance
+        balance += amount;
+
+        query = "UPDATE savings_accounts SET balance = ? WHERE account_id = ?;";
+        DBConnection.runQuery(query, balance, accountNumber);
     }
 
     /**
      * Updates the loan amount of a credit account.
-     * @param account The LoanHolder account to update.
+     * @param accountNumber The LoanHolder account to update.
+     * @param amount The amount to be adjusted. Either positive or negative.
      */
-    public static void updateAccountLoan(LoanHolder account) {
-        String query = "UPDATE credit_accounts " +
-                "SET loan = " + account.getLoan() + " " +
-                "WHERE account_id = '" + ((Account) account).getAccountNumber() + "';";
-        DBConnection.runQuery(query);
+    public static void updateAccountLoan(String accountNumber, double amount) {
+        // fetch account initial account loan
+        String query = "SELECT loan FROM credit_accounts WHERE account_id = ?";
+        ResultSet rs = DBConnection.runQuery(query, accountNumber);
+        double loan = 0.0;
+        try {
+            rs.next();
+            loan = rs.getDouble("loan");
+        } catch(SQLException ex) {}
+
+        // Update loan
+        loan += amount;
+
+        query = "UPDATE credit_accounts SET loan = ? WHERE account_id = ?";
+        DBConnection.runQuery(query, loan, accountNumber);
     }
 }

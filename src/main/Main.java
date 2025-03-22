@@ -33,9 +33,6 @@ public class Main
         // Opens a connection to the database.
         try {
             new DBConnection();
-            BankDBManager.createTable();
-            AccountDBManager.createTable();
-            TransactionDBManager.createTable();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             return;
@@ -59,7 +56,8 @@ public class Main
 
                 AccountLauncher.accountLogin();
                 if (AccountLauncher.getLogSession().isLoggedIn()) {
-   //                  polymorphic call of init method to whatever type the logged account is;
+                // polymorphic call of init method to whatever type the logged account is;
+                    System.out.println(AccountLauncher.getLogSession().getLoggedAccount().getOwnerFullName());
                   AccountLauncher.getLogSession().getLoggedAccount().init();
                 }
             }
@@ -75,7 +73,7 @@ public class Main
                     if (getOption() == 1) {
                         while (true) {
                             if (BankDBManager.getBanks() == null) {
-                                System.out.println("\nThere no currently registered banks in the system!");
+                                System.out.println("\nThere are currently no registered banks in the system!");
                                 break;
                             }
 
@@ -96,7 +94,9 @@ public class Main
                     else if (getOption() == 2) {
                         break;
                     }
-                    break;
+                    else {
+                        System.out.println("Invalid option!");
+                    }
                 }
             }
             // Create New Bank

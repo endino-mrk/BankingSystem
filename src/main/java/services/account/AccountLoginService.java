@@ -10,7 +10,7 @@ import database.sqlite.BankDBManager;
  */
 public class AccountLoginService {
     private Account loggedAccount = null;
-    private Bank assocBank = null;
+    private String assocBank = null;
 
     public AccountLoginService() {};
 
@@ -21,7 +21,7 @@ public class AccountLoginService {
     /**
      * Get the associated Bank instance of the currently logged account.
      */
-    public Bank getAssocBank(){ return assocBank;}
+    public String getAssocBank(){ return assocBank;}
     /**
      * Verifies if some account is currently logged in.
      */
@@ -47,7 +47,7 @@ public class AccountLoginService {
     public void setLogSession(Account account){
         if (loggedAccount == null && assocBank == null) {
             loggedAccount = account;
-            assocBank = BankDBManager.fetchBank(account.getBankID());
+            assocBank = account.getBankID();
         }
     }
     /**

@@ -11,20 +11,17 @@ import bank.Bank;
  * Manages fund transfers between accounts.
  */
 public class TransferService {
-    public static boolean transfer(BalanceHolder source, BalanceHolder recipient, double amount) {
+    public static boolean transfer(BalanceHolder source, String recipient, double amount, double processingFee) {
         if (BalanceManager.hasEnoughBalance(source, amount)) {
-            BalanceManager.adjustAccountBalance(source, -amount);
-            AccountDBManager.updateAccountBalance(source);
+            // Update source balance
+            BalanceManager.adjustAccountBalance(source, -1 * (amount + processingFee)); // in memory
+            AccountDBManager.updateAccountBalance(((Account) source).getAccountNumber(), -1 * (amount + processingFee));
 
-            // if recipient account is from another bank, subtracts source bank processing fee from the fund transfer amount
-            if (!((Account) source).getBankID().equals(((Account) recipient).getBankID())) {
-                Bank bank = BankDBManager.fetchBank(((Account) source).getBankID());
-                amount -= bank.getProcessingFee();
-            }
+            // update recipient balance
+            AccountDBManager.updateAccountBalance(recipient, amount);
 
-            BalanceManager.adjustAccountBalance(recipient, amount);
-            AccountDBManager.updateAccountBalance(recipient);
-            generateTransaction((Account) source, (Account) recipient, amount);
+            // record transfer transaction for source and recipient
+            generateTransaction(((Account) source).getAccountNumber(), recipient, amount);
             System.out.println("Transfer successful!");
             return true;
         }
@@ -33,15 +30,11 @@ public class TransferService {
         return false;
     }
 
-    public static boolean transfer(Bank sourceBank, BalanceHolder source, BalanceHolder recipient, double amount) {
-        return transfer(source, recipient, amount + sourceBank.getProcessingFee());
-    }
-
-    private static void generateTransaction(Account source, Account recipient, double amount) {
-        String sourceDesc = String.format("-%.2f transferred from this account to %s with Acc. No. %s.", amount, recipient.getOwnerFullName(), recipient.getAccountNumber());
+    private static void generateTransaction(String source, String recipient, double amount) {
+        String sourceDesc = String.format("-%.2f transferred from this account to Acc. No. %s.", amount, recipient);
         TransactionLogService.logTransaction(source, Transaction.Transactions.FundTransfer, sourceDesc);
 
-        String recipientDesc = String.format("+%.2f transferred to this account from %s with Acc. No. %s.", amount, source.getOwnerFullName(), source.getAccountNumber());
+        String recipientDesc = String.format("+%.2f transferred to this account from Acc. No. %s.", amount, source);
         TransactionLogService.logTransaction(recipient, Transaction.Transactions.FundTransfer, recipientDesc);
     }
 }

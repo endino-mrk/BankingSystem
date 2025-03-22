@@ -1,5 +1,6 @@
 package database.sqlite;
 
+import org.sqlite.core.DB;
 import services.transaction.Transaction;
 
 import javax.xml.transform.Result;
@@ -20,30 +21,33 @@ public class TransactionDBManager {
         DBConnection.runQuery(query);
     }
 
-    public static void addTransaction(Transaction transaction) {
-        String values = transaction.csvString();
-        String query = "INSERT INTO transactions (account_id, type, description) VALUES " + values + ";";
-        DBConnection.runQuery(query);
+    public static void addTransaction(String accountID, Transaction.Transactions type, String description) {
+//        String values = transaction.csvString();
+//        String query = "INSERT INTO transactions (account_id, type, description) VALUES " + values + ";";
+//        DBConnection.runQuery(query);
+
+        String query = "INSERT INTO transactions (account_id, type, description) VALUES (?, ?, ?);";
+        DBConnection.runQuery(query, accountID, type.toString(), description);
+
     }
 
-    public static ArrayList<Transaction> getTransactions(String accountID) {
-        String query = "SELECT * FROM transactions WHERE account_id = '" + accountID + "';";
-        ResultSet transactionRS = DBConnection.runQuery(query);
-        if (!isEmpty(transactionRS)) {
-            ArrayList<Transaction> transactions = new ArrayList<>();
-
+    public static ArrayList<String> fetchTransactions(String accountID) {
+        String query = "SELECT * FROM transactions WHERE account_id = ?;";
+        ResultSet rs = DBConnection.runQuery(query, accountID);
+        if (!isEmpty(rs)) {
+            System.out.println("Nisulod sya DB fetchTransa");
+            ArrayList<String> transactions = new ArrayList<>();
             try {
-                while (transactionRS.next()) {
-                    String accountId= transactionRS.getString("account_id");
-                    String type = transactionRS.getString("type");
-                    String description = transactionRS.getString("description");
-                    transactions.add(new Transaction(accountID, Transaction.Transactions.valueOf(type), description));
+                while(rs.next()) {
+                    // add transactions from result set to transactions ArrayList
+                    transactions.add(String.format("[Acc. No. %s] - [%s] -- ", rs.getString("account_id"), rs.getString("type"), rs.getString("description")));
+                    System.out.println("Nisulod sya DB fetchTransa while rs.next");
                 }
+                System.out.println("Nisulod sya DB fetchTransa return transactions");
                 return transactions;
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            } catch (SQLException e) {}
         }
+        System.out.println("Nisulod sya DB fetchTransa return null");
         return null;
     }
 }

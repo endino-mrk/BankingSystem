@@ -15,7 +15,6 @@ public abstract class Account {
     private final String accountNumber;
     private final String ownerFName, ownerLName, ownerEmail;
     private String pin;
-    private final ArrayList<Transaction> Transactions;
 
     /**
      *
@@ -33,7 +32,6 @@ public abstract class Account {
         this.ownerLName = ownerlname;
         this.ownerEmail = owneremail;
         this.pin = pin;
-        this.Transactions = new ArrayList<>();
     }
 
     public String getAccountNumber() {
@@ -62,10 +60,6 @@ public abstract class Account {
 
     public String getPin() {
         return pin;
-    }
-
-    public ArrayList<Transaction> getTransactions() {
-        return Transactions;
     }
 
     public String toString() {

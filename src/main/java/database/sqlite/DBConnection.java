@@ -1,5 +1,7 @@
 package database.sqlite;
 
+import services.transaction.Transaction;
+
 import java.sql.*;
 
 public class DBConnection {
@@ -13,8 +15,11 @@ public class DBConnection {
         Class.forName("org.sqlite.JDBC");
         String url = "jdbc:sqlite:master.db";
         sqliteConnection = DriverManager.getConnection(url);
-        Statement statement = sqliteConnection.createStatement();
-        statement.executeQuery("PRAGMA busy_timeout = 5000");
+        BankDBManager.createTable();
+        AccountDBManager.createTable();
+        TransactionDBManager.createTable();
+//        Statement statement = sqliteConnection.createStatement();
+//        statement.executeQuery("PRAGMA busy_timeout = 5000");
     }
 
     /**
@@ -25,16 +30,23 @@ public class DBConnection {
      * @param query The SQL query to be executed.
      * @return ResultSet of the executed query if it's a `SELECT` query, otherwise null.
      */
-    public static ResultSet runQuery(String query) {
+    public static ResultSet runQuery(String query, Object... params) {
         if (sqliteConnection != null) {
-            Statement statement;
             try {
-                statement = sqliteConnection.createStatement();
-                if (query.split(" ")[0].equals("SELECT")) {
-                    return statement.executeQuery(query);
-                } else {
-                    statement.executeUpdate(query);
+                PreparedStatement statement = sqliteConnection.prepareStatement(query);
 
+                if (params != null || params.length != 0) {
+                    // sets the param values to query placeholders
+                    for (int i = 0; i < params.length; i++) {
+                        statement.setObject(i + 1, params[i]);
+                    }
+                }
+
+                // executes statement based on type of query
+                if (query.startsWith("SELECT")) {
+                    return statement.executeQuery();
+                } else {
+                    statement.executeUpdate();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

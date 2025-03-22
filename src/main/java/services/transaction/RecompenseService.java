@@ -11,9 +11,11 @@ import services.LoanManager;
 public class RecompenseService {
     public static boolean recompense(LoanHolder account, double amount) {
         if (account.getLoan() - amount >= 0) {
-            LoanManager.adjustLoanAmount(account, -amount);
-            AccountDBManager.updateAccountLoan(account);
-            generateTransaction((Account) account, amount);
+            // update loan
+            LoanManager.adjustLoanAmount(account, (-1 * amount));
+            AccountDBManager.updateAccountLoan(((Account) account).getAccountNumber(), (-1 * amount));
+            // record loan transaction
+            generateTransaction(((Account) account).getAccountNumber(), amount);
             System.out.println("Recompense successful!");
             return true;
         }
@@ -21,8 +23,8 @@ public class RecompenseService {
         return false;
     }
 
-    private static void generateTransaction(Account account, double amount) {
+    private static void generateTransaction(String accountNumber, double amount) {
         String description = String.format("-%.2f paid to the credit of this account.", amount);
-        TransactionLogService.logTransaction(account, Transaction.Transactions.Recompense, description);
+        TransactionLogService.logTransaction(accountNumber, Transaction.Transactions.Recompense, description);
     }
 }

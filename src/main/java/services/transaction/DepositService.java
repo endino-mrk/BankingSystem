@@ -11,36 +11,33 @@ import services.BalanceManager;
  * Handles deposit operation of balance
  */
 public class DepositService {
-    public static boolean cashDeposit(Account account, double amount) {
+    public static boolean cashDeposit(BalanceHolder account, double amount) {
         // Amount must not go above bank deposit limit.
-        if (!(account instanceof BalanceHolder)){
-            System.out.println("Account cannot do deposits.");
-            return false;
-        }
-
         if (canDeposit(account, amount)) {
-            BalanceManager.adjustAccountBalance((BalanceHolder) account, amount);
-            AccountDBManager.updateAccountBalance((BalanceHolder) account);
+            BalanceManager.adjustAccountBalance(account, amount);
+            AccountDBManager.updateAccountBalance(((Account) account).getAccountNumber(), amount);
 
-            generateTransaction(account, amount);
+            generateTransaction(((Account) account).getAccountNumber(), amount);
 
             System.out.println("Deposit successful!");
             return true;
             }
+        System.out.println("Deposit unsuccessful!");
         return false;
     }
 
-    private static boolean canDeposit(Account account, double amount) {
-        Bank bank = BankDBManager.fetchBank(account.getBankID());
-        if (amount > bank.getDepositLimit()) {
-            System.out.printf("Amount to deposit must not go above %.2f.", bank.getDepositLimit());
+    private static boolean canDeposit(BalanceHolder account, double amount) {
+        // fetch bank deposit limit from database
+        double depositLimit = BankDBManager.getBankLimit(((Account) account).getBankID(), BankDBManager.BankFields.depositLimit);
+        if (amount > depositLimit) {
+            System.out.printf("Amount to deposit must not go above %.2f.", depositLimit);
             return false;
         }
         return true;
     }
 
-    private static void generateTransaction(Account account, double amount) {
+    private static void generateTransaction(String accountID, double amount) {
         String description = String.format("+%.2f via Cash Deposit.", amount);
-        TransactionLogService.logTransaction(account, Transaction.Transactions.Deposit, description);
+        TransactionLogService.logTransaction(accountID, Transaction.Transactions.Deposit, description);
     }
 }

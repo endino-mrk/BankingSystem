@@ -5,20 +5,16 @@ import services.transaction.RecompenseService;
 import services.transaction.PaymentService;
 import main.Main;
 import account.CreditAccount;
-import launcher.AccountLauncher;
 import account.Account;
-import account.BalanceHolder;
-import account.LoanHolder;
 import services.transaction.TransactionLogService;
 
 
 public class CreditAccountLauncher extends AccountLauncher {
     public static CreditAccount getLoggedAccount() {
         Account loggedAccount = logSession.getLoggedAccount();
-        if (loggedAccount instanceof CreditAccount) {
-            return (CreditAccount) loggedAccount;
-        }
-        return null;
+//        if (loggedAccount instanceof CreditAccount) {
+        return (CreditAccount) loggedAccount;
+//        }
     }
     ///  initializes credit account interface
     public static void creditAccountInit(){
@@ -58,21 +54,26 @@ public class CreditAccountLauncher extends AccountLauncher {
     /**
      * Method that is utilized to loan payment transaction.
      */
-    public static void loan(account.CreditAccount account){
+    public static void loan(CreditAccount account){
         Field<Double, Double> amount = new Field("amount", Double.class, 0.0, new Field.DoubleFieldValidator());
         Field<String, String> recipientID = new Field("recipientID", String.class, "", new Field.StringFieldValidator());
 
-        amount.setFieldValue("Enter amount: ");
         recipientID.setFieldValue("Enter recipient's account number: ");
 
-        Account recipient = AccountDBManager.fetchAccount(recipientID.getFieldValue());
+        // fetch recipient type
+//        String recipient = AccountDBManager.fetchType(recipientID.getFieldValue());
+//
+//        if (!recipient.equals("1")) {
+//            System.out.println("You can only pay to a savings account.");
+//            return;
+//        }
 
-        if (!(recipient instanceof BalanceHolder)) {
-            System.out.println("You can only pay to a savings account.");
-            return;
+        if (AccountDBManager.existsInSavings(recipientID.getFieldValue())) {
+            amount.setFieldValue("Enter amount: ");
+            PaymentService.pay(account, recipientID.getFieldValue(), amount.getFieldValue());
+        } else {
+            System.out.println("Invalid recipient account.");
         }
-        PaymentService.pay(account,(BalanceHolder) recipient, amount.getFieldValue());
-        System.out.printf("Successfully paid %.2f.\n", amount.getFieldValue());
     }
     /**
      * Method that is utilized to recompense payment transaction.
@@ -81,8 +82,6 @@ public class CreditAccountLauncher extends AccountLauncher {
         Field<Double, Double> amount = new Field<>("amount", Double.class, 0.0, new Field.DoubleFieldValidator());
         amount.setFieldValue("Enter amount to recompense: ");
 
-        if (RecompenseService.recompense(account,amount.getFieldValue())) {
-            System.out.printf("Successfully recompensed %.2f.\n", amount.getFieldValue());
-        }
+        RecompenseService.recompense(account,amount.getFieldValue());
     }
 }

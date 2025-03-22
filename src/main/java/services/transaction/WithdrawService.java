@@ -17,9 +17,12 @@ public class WithdrawService {
         // Amount must not go above bank withdrawal limit
         if (canWithdraw((Account) account, amount)){
             if(BalanceManager.hasEnoughBalance(account, amount)) {
-                BalanceManager.adjustAccountBalance(account, -amount); // Subtracts amount from balance
-                AccountDBManager.updateAccountBalance(account);
-                generateTransaction((Account) account, amount);
+                // updates account balance
+                BalanceManager.adjustAccountBalance(account, (-1 * amount)); // in memory
+                AccountDBManager.updateAccountBalance(((Account) account).getAccountNumber(), (-1 * amount)); // in db
+
+                // record transaction
+                generateTransaction(((Account) account).getAccountNumber(), amount);
                 System.out.printf("Withdrawal successful!");
                 return true;
             }
@@ -30,16 +33,16 @@ public class WithdrawService {
     }
 
     private static boolean canWithdraw(Account account, double amount) {
-        Bank bank = BankDBManager.fetchBank(account.getBankID());
-        if (amount > bank.getWithdrawLimit()) {
-            System.out.printf("Amount to withdraw must not go above %.2f.", bank.getWithdrawLimit());
+        double withdrawLimit = BankDBManager.getBankLimit(account.getBankID(), BankDBManager.BankFields.withdrawLimit);
+        if (amount > withdrawLimit) {
+            System.out.printf("Amount to withdraw must not go above %.2f.", withdrawLimit);
             return false;
         }
         return true;
     }
 
-    private static void generateTransaction(Account account, double amount) {
-        String description = String.format("-%.2f withdrawed from this account''s balance.", amount);
-        TransactionLogService.logTransaction(account, Transaction.Transactions.Withdraw, description);
+    private static void generateTransaction(String accountNumber, double amount) {
+        String description = String.format("-%.2f withdrawed from this account's balance.", amount);
+        TransactionLogService.logTransaction(accountNumber, Transaction.Transactions.Withdraw, description);
     }
 }

@@ -10,14 +10,14 @@ import services.LoanManager;
  * Manages credit-related transactions.
  */
 public class CreditService {
-    public static boolean credit(LoanHolder account, double amount) {
-        if (canCredit(account, amount)) {
-            LoanManager.adjustLoanAmount((LoanHolder)account, amount);
-            //insert Update to database logic
-            return true;
-        }
-        return false;
-    }
+//    public static boolean credit(LoanHolder account, double amount) {
+//        if (canCredit(account, amount)) {
+//            LoanManager.adjustLoanAmount((LoanHolder)account, amount);
+//            //insert Update to database logic
+//            return true;
+//        }
+//        return false;
+//    }
 
     /**
      * Checks if this credit account can do additional credit transactions if the amount to credit will not exceeded the credit limit set by the bank associated to this Credit Account.
@@ -26,9 +26,9 @@ public class CreditService {
      * @return Flag if this account can continue with the credit transaction.
      */
     public static boolean canCredit(LoanHolder account, double amount){
-        Bank bank = BankDBManager.fetchBank(((Account)account).getBankID());
-        if (account.getLoan() + amount > bank.getCreditLimit()) {
-            System.out.printf("This account's total loan must not go above %.2f.", bank.getCreditLimit());
+        double creditLimit = BankDBManager.getBankLimit(((Account) account).getBankID(), BankDBManager.BankFields.creditLimit);
+        if (account.getLoan() + amount > creditLimit) {
+            System.out.printf("This account's total loan must not go above %.2f.", creditLimit);
             return false;
         }
         return true;

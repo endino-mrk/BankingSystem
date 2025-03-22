@@ -7,6 +7,17 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 public class BankDBManager {
+    // Enum of column names in the banks table
+    public enum BankFields {
+        bank_id,
+        name,
+        passcode,
+        depositLimit,
+        creditLimit,
+        withdrawLimit,
+        processingFee
+    }
+
     /**
      * Creates the banks table if it does not already exist.
      */
@@ -67,7 +78,7 @@ public class BankDBManager {
     public static HashMap<String, String> getBanks() {
         String sqlQuery = "SELECT bank_id, name FROM Banks;";
         ResultSet banks = DBConnection.runQuery(sqlQuery);
-        if (banks != null) {
+        if (!isEmpty(banks)) {
             HashMap<String, String> bankDetails = new HashMap<>();
             try {
                 while (banks.next()) {
@@ -132,6 +143,31 @@ public class BankDBManager {
                 "WHERE accounts.bank_id = '" + bankID + "';";
         ResultSet savingsAccounts = DBConnection.runQuery(query);
         return extractAccountDetails(savingsAccounts);
+     }
+
+     public static double getBankProcessingFee(String bankId) {
+        String query = String.format("SELECT processingFee FROM banks WHERE bank_id = %s", bankId);
+        ResultSet rs = DBConnection.runQuery(query);
+        double pf = 0.0;
+        try {
+            rs.next();
+            pf = rs.getDouble(0);
+        } catch (SQLException ex) {
+            //
+        }
+        return pf;
+     }
+
+     public static double getBankLimit(String bankID, BankFields limitType) {
+        String query = "SELECT ? FROM banks WHERE bank_id = ?;";
+        ResultSet rs = DBConnection.runQuery(query, limitType.toString(), bankID);
+        double limit = 0.0;
+        try {
+            if (!isEmpty(rs)) {
+                limit = rs.getDouble(limitType.toString());
+            }
+        } catch (SQLException e) {}
+        return limit;
      }
 
     /**

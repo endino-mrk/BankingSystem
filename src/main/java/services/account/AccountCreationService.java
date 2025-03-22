@@ -29,7 +29,7 @@ public class AccountCreationService {
 
 
         // Set every Field's value
-        fName.setFieldValue("Enter first name: ");
+        fName.setFieldValue("Enter first name: ", false);
         lName.setFieldValue("Enter last name: ");
         email.setFieldValue("Enter email address: ");
         pin.setFieldValue("Enter pin (must be 6 digits): ");
